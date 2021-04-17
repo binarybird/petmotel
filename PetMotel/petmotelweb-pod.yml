@@ -1,0 +1,12 @@
+﻿apiVersion: v1
+kind: Pod
+metadata:
+  name: dotnetcoreapp
+spec:
+  containers:
+    - image: docker.io/binarybird/petmotelweb
+      name: dotnetcoreapp
+      imagePullPolicy: Always
+      resources: {}
+      ports:
+        - containerPort: 8080

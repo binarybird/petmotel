@@ -1,0 +1,50 @@
+﻿apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  creationTimestamp: null 
+  labels: 
+    app: petmotel-web 
+  name: petmotel-web 
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: petmotel-web 
+  strategy: {} 
+  template: 
+    metadata: 
+      creationTimestamp: null 
+      labels: 
+        app: petmotel-web 
+    spec: 
+        imagePullSecrets: 
+          - name: regcred 
+        containers: 
+          - image: docker.io/binarybird/petmotelweb 
+            name: petmotel-web
+            imagePullPolicy: Always 
+            resources: {} 
+            ports: 
+              - name: http
+                containerPort: 80
+              - name: https
+                containerPort: 443
+status: {} 
+---
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: petmotel-web
+  labels:
+    run: petmotel-web
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+  - port: 443
+    protocol: TCP
+    name: https
+  selector:
+    app: petmotel-web
+  type: NodePort

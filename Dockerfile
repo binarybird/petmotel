@@ -8,11 +8,13 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /app
 COPY . .
-RUN dotnet restore "PetMotelWeb.csproj"
-RUN dotnet build "PetMotelWeb.csproj" -c Release -o /app/build
+RUN dotnet restore "Common/Common.csproj"
+RUN dotnet build "Common/Common.csproj" -c Release -o /app/build
+RUN dotnet restore "PetMotel/PetMotelWeb.csproj"
+RUN dotnet build "PetMotel/PetMotelWeb.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PetMotelWeb.csproj" -c Release -o /app/publish
+RUN dotnet publish "PetMotel/PetMotelWeb.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

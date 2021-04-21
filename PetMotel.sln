@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetMotelWeb", "PetMotel\PetMotelWeb.csproj", "{C8A1225E-111D-4B41-8375-0010451C7F04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{811247B4-5F7E-474C-A9D6-8566784A2E78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{597C6679-2D6B-4B8A-A627-4A76F8CC3F22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "services\Consumer\Consumer.csproj", "{7E2ADBB0-990F-45C4-A968-2946ABD1778B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,11 +21,22 @@ Global
 		{C8A1225E-111D-4B41-8375-0010451C7F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8A1225E-111D-4B41-8375-0010451C7F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8A1225E-111D-4B41-8375-0010451C7F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{811247B4-5F7E-474C-A9D6-8566784A2E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{811247B4-5F7E-474C-A9D6-8566784A2E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{811247B4-5F7E-474C-A9D6-8566784A2E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{811247B4-5F7E-474C-A9D6-8566784A2E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E2ADBB0-990F-45C4-A968-2946ABD1778B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2ADBB0-990F-45C4-A968-2946ABD1778B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2ADBB0-990F-45C4-A968-2946ABD1778B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2ADBB0-990F-45C4-A968-2946ABD1778B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3610599A-8ABE-4801-BA3D-594E44EF252B}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7E2ADBB0-990F-45C4-A968-2946ABD1778B} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
 	EndGlobalSection
 EndGlobal

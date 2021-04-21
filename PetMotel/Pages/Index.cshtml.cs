@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PetMotelWeb.Messaging;
 
-namespace PetMotel.Pages
+namespace PetMotelWeb.Pages
 {
     public class IndexModel : PageModel
     {
@@ -20,6 +16,16 @@ namespace PetMotel.Pages
         public void OnGet()
         {
 
+        }
+
+        public void OnPost()
+        {
+            var emailAddress = Request.Form["search"];
+            _logger.LogInformation($"Got {emailAddress}");
+            RabbitMqManager m = new RabbitMqManager(_logger);
+            m.SendExampleEmail(new ExampleEmail(emailAddress));
+
+            RedirectToPage("/");
         }
     }
 }

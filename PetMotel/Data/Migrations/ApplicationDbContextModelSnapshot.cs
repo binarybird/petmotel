@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PetMotel.Data;
 using System;
+using PetMotelWeb.Data;
 
 namespace PetMotel.Data.Migrations
 {

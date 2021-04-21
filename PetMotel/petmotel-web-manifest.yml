@@ -3,6 +3,18 @@ kind: Namespace
 metadata:
   name: petmotel
 ---
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92Mi8iOnsidXNlcm5hbWUiOiJiaW5hcnliaXJkIiwicGFzc3dvcmQiOiJwRkI0V3NVRjRpYWc0RSIsImVtYWlsIjoiamFtZXNyaWNoYXJkc29uMkBnbWFpbC5jb20iLCJhdXRoIjoiWW1sdVlYSjVZbWx5WkRwd1JrSTBWM05WUmpScFlXYzBSUT09In19fQ==
+kind: Secret
+metadata:
+  creationTimestamp: "2021-04-21T18:59:11Z"
+  name: regcred
+  namespace: petmotel
+  resourceVersion: "32835"
+  uid: 33d36f1d-0632-44be-80a5-286ea134e41f
+type: kubernetes.io/dockerconfigjson
+---
 apiVersion: apps/v1
 kind: Deployment 
 metadata: 
@@ -12,7 +24,7 @@ metadata:
   name: petmotel-web 
   namespace: petmotel
 spec: 
-  replicas: 2
+  replicas: 1
   selector: 
     matchLabels: 
       app: petmotel-web 
@@ -23,6 +35,7 @@ spec:
       labels: 
         app: petmotel-web 
     spec: 
+        dnsPolicy: ClusterFirst
         imagePullSecrets: 
           - name: regcred 
         containers: 
@@ -50,3 +63,20 @@ spec:
   selector:
     app: petmotel-web
   type: NodePort
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: petmotel-web-ingress
+  namespace: petmotel
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: petmotel-web
+          servicePort: 80

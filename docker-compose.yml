@@ -4,14 +4,14 @@ services:
     build:
       context: .
       dockerfile: PetMotelWeb/Dockerfile
-    image: docker.io/binarybird/petmotelweb
+    image: docker.io/binarybird/petmotel-web
   petmotel-identity:
     build:
       context: .
       dockerfile: services/Identity/Dockerfile
-    image: docker.io/binarybird/petmotelidentity
+    image: docker.io/binarybird/petmotel-identity
   petmotel-basket:
     build:
       context: .
       dockerfile: services/Basket/Dockerfile
-    image: docker.io/binarybird/petmotelbasket
+    image: docker.io/binarybird/petmotel-basket

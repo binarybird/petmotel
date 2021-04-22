@@ -3,18 +3,6 @@ kind: Namespace
 metadata:
   name: petmotel
 ---
-apiVersion: v1
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92Mi8iOnsidXNlcm5hbWUiOiJiaW5hcnliaXJkIiwicGFzc3dvcmQiOiJwRkI0V3NVRjRpYWc0RSIsImVtYWlsIjoiamFtZXNyaWNoYXJkc29uMkBnbWFpbC5jb20iLCJhdXRoIjoiWW1sdVlYSjVZbWx5WkRwd1JrSTBWM05WUmpScFlXYzBSUT09In19fQ==
-kind: Secret
-metadata:
-  creationTimestamp: "2021-04-21T18:59:11Z"
-  name: regcred
-  namespace: petmotel
-  resourceVersion: "32835"
-  uid: 33d36f1d-0632-44be-80a5-286ea134e41f
-type: kubernetes.io/dockerconfigjson
----
 apiVersion: apps/v1
 kind: Deployment 
 metadata: 
@@ -39,7 +27,7 @@ spec:
         imagePullSecrets: 
           - name: regcred 
         containers: 
-          - image: docker.io/binarybird/petmotelweb 
+          - image: docker.io/binarybird/petmotel-web 
             name: petmotel-web
             imagePullPolicy: Always 
             resources: {} 

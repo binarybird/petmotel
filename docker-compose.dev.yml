@@ -1,0 +1,5 @@
+version: '3.4'
+services:
+  petmotel-web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

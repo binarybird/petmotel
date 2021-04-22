@@ -1,0 +1,17 @@
+﻿version: '3.4'
+services:
+  petmotel-web:
+    build:
+      context: .
+      dockerfile: PetMotelWeb/Dockerfile
+    image: docker.io/binarybird/petmotelweb
+  petmotel-identity:
+    build:
+      context: .
+      dockerfile: services/Identity/Dockerfile
+    image: docker.io/binarybird/petmotelidentity
+  petmotel-basket:
+    build:
+      context: .
+      dockerfile: services/Basket/Dockerfile
+    image: docker.io/binarybird/petmotelbasket

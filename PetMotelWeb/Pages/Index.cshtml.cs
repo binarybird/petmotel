@@ -22,7 +22,7 @@ namespace PetMotelWeb.Pages
         {
             var emailAddress = Request.Form["search"];
             _logger.LogInformation($"Got {emailAddress}");
-            RabbitMqManager m = new RabbitMqManager(_logger);
+            MessageManager m = new MessageManager(_logger);
             m.SendExampleEmail(new ExampleEmail(emailAddress));
 
             RedirectToPage("/");

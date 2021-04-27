@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0D03PpkOcgZGcCQ3HtP8Ge/04F1Y05Lfw+5wcHPwQjK/DkyCbMsTnme0+GD8jFEIXP9CeQJAUk6w5PeyCofxWA==",
+  "dgSpecHash": "RlBRc3Yen4p9PzxFeGF6gttXDezKZZE6aPeuw3ayirdwooRmql5MKELSz5qUO45Ko7K4JiwD8laf069HgygPaA==",
   "success": true,
   "projectFilePath": "/home/james/git/petmotel/Common/Common.csproj",
-  "expectedPackageFiles": [
-    "/home/james/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
-    "/home/james/.nuget/packages/rabbitmq.client/6.2.1/rabbitmq.client.6.2.1.nupkg.sha512",
-    "/home/james/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
-    "/home/james/.nuget/packages/system.threading.channels/4.7.1/system.threading.channels.4.7.1.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

@@ -1,3 +1,5 @@
+using System;
+using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetMotelWeb.Data;
 using MassTransit;
+using Microsoft.Extensions.Logging;
+using PetMotelWeb.Messaging;
 
 namespace PetMotelWeb
 {
@@ -22,10 +26,33 @@ namespace PetMotelWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // var bus = Bus.Factory.CreateUsingRabbitMq(config =>
+            // {
+            //     config.Host();
+            // })
+            services.AddLogging(opt =>
+            {
+                opt.AddConsole(c =>
+                {
+                    c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
+                });
+            });
             services.AddMassTransit(x =>
             {
-                x.UsingRabbitMq();
-                
+                x.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Durable = true;
+                    cfg.AutoDelete = false;
+                    cfg.Exclusive = false;
+                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
+                    cfg.ReceiveEndpoint(RabbitMqConstants.TestQueue, c =>
+                    {
+                        c.Handler<IExampleEmail>(ctx =>
+                        {
+                            return Console.Out.WriteLineAsync(ctx.Message.Email);
+                        });
+                    });
+                });
             });
             services.AddMassTransitHostedService();
             
@@ -36,6 +63,8 @@ namespace PetMotelWeb
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+
+            // services.AddTransient<MessageManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

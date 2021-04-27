@@ -2,6 +2,6 @@ namespace Common
 {
     public interface IExampleEmail
     {
-        public string GetEmail();
+        public string Email { get; set; }
     }
 }

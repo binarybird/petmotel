@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/home/james/git/petmotel/PetMotelWeb/PetMotelWeb.csproj": {}
+    "C:\\Users\\binar\\source\\repos\\PetMotel\\PetMotelWeb\\PetMotelWeb.csproj": {}
   },
   "projects": {
-    "/home/james/git/petmotel/Common/Common.csproj": {
+    "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/james/git/petmotel/Common/Common.csproj",
+        "projectUniqueName": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "/home/james/git/petmotel/Common/Common.csproj",
-        "packagesPath": "/home/james/.nuget/packages/",
-        "outputPath": "/home/james/git/petmotel/Common/obj/",
+        "projectPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj",
+        "packagesPath": "C:\\Users\\binar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/james/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\binar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -52,34 +54,36 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/james/git/petmotel/PetMotelWeb/PetMotelWeb.csproj": {
+    "C:\\Users\\binar\\source\\repos\\PetMotel\\PetMotelWeb\\PetMotelWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/james/git/petmotel/PetMotelWeb/PetMotelWeb.csproj",
+        "projectUniqueName": "C:\\Users\\binar\\source\\repos\\PetMotel\\PetMotelWeb\\PetMotelWeb.csproj",
         "projectName": "PetMotelWeb",
-        "projectPath": "/home/james/git/petmotel/PetMotelWeb/PetMotelWeb.csproj",
-        "packagesPath": "/home/james/.nuget/packages/",
-        "outputPath": "/home/james/git/petmotel/PetMotelWeb/obj/",
+        "projectPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\PetMotelWeb\\PetMotelWeb.csproj",
+        "packagesPath": "C:\\Users\\binar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\PetMotelWeb\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/james/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\binar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "/home/james/git/petmotel/Common/Common.csproj": {
-                "projectPath": "/home/james/git/petmotel/Common/Common.csproj"
+              "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj": {
+                "projectPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj"
               }
             }
           }
@@ -157,7 +161,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

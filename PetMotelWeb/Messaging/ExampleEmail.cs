@@ -4,15 +4,16 @@ namespace PetMotelWeb.Messaging
 {
     public class ExampleEmail : IExampleEmail
     {
-        private readonly string _email;
         public ExampleEmail(string email)
         {
-            _email = email;
+            Email = email;
         }
-        
-        public string GetEmail()
+
+        public ExampleEmail()
         {
-            return _email;
+            
         }
+
+        public string Email { get; set; }
     }
 }

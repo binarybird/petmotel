@@ -8,24 +8,26 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/home/james/.nuget/packages/": {}
+    "C:\\Users\\binar\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/james/git/petmotel/Common/Common.csproj",
+      "projectUniqueName": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj",
       "projectName": "Common",
-      "projectPath": "/home/james/git/petmotel/Common/Common.csproj",
-      "packagesPath": "/home/james/.nuget/packages/",
-      "outputPath": "/home/james/git/petmotel/Common/obj/",
+      "projectPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\Common.csproj",
+      "packagesPath": "C:\\Users\\binar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\binar\\source\\repos\\PetMotel\\Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/james/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\binar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -58,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

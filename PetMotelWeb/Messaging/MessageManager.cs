@@ -1,27 +1,54 @@
 using System;
 using System.Text;
+using System.Threading;
 using Common;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
 namespace PetMotelWeb.Messaging
 {
-
     public class MessageManager : IDisposable
     {
         private readonly IModel _channel;
         private readonly ILogger _logger;
-        
+    
         public MessageManager(ILogger logger)
         {
+            _logger = logger;
         }
-
-        public void SendExampleEmail(IExampleEmail email)
+    
+        public async void SendExampleEmail(IExampleEmail email)
         {
+            _logger.LogInformation("Init bus control");
+            var busControl = Bus.Factory.CreateUsingRabbitMq(config =>
+            {
+                config.Host(RabbitMqConstants.RabbitMqUri);
+            });
             
+            _logger.LogInformation("Start Async");
+            var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            await busControl.StartAsync(source.Token);
+            try
+            {
+                _logger.LogInformation("Publishing");
+                await busControl.Publish<ExampleEmail>(new
+                {
+                    email = email.Email
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"{e.Message}\n{e.StackTrace}");
+            }
+            finally
+            {
+                await busControl.StopAsync();
+            }
+            _logger.LogInformation("Done");
         }
-
+    
         public void Dispose()
         {
             _channel?.Dispose();

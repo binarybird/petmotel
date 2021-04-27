@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using PetMotelWeb.Messaging;
 
@@ -22,6 +23,7 @@ namespace PetMotelWeb.Pages
         {
             var emailAddress = Request.Form["search"];
             _logger.LogInformation($"Got {emailAddress}");
+
             MessageManager m = new MessageManager(_logger);
             m.SendExampleEmail(new ExampleEmail(emailAddress));
 

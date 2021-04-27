@@ -1,0 +1,19 @@
+services:
+  petmotel-basket:
+    build:
+      context: C:\Users\binar\source\repos\PetMotel
+      dockerfile: services/Basket/Dockerfile
+    image: docker.io/binarybird/petmotel-basket
+  petmotel-identity:
+    build:
+      context: C:\Users\binar\source\repos\PetMotel
+      dockerfile: services/Identity/Dockerfile
+    image: docker.io/binarybird/petmotel-identity
+  petmotel-web:
+    build:
+      context: C:\Users\binar\source\repos\PetMotel
+      dockerfile: PetMotelWeb/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    image: docker.io/binarybird/petmotel-web
+version: '3.4'

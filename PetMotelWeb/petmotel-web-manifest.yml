@@ -52,19 +52,42 @@ spec:
     app: petmotel-web
   type: NodePort
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: petmotel-web-ingress
   namespace: petmotel
   annotations:
+    kubernetes.io/ingress.class: nginx
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  tls:
+  - hosts:
+    - petmotel.org
+    secretName: petmotel-web-ingress-crt
   rules:
-  - http:
+  - host: petmotel.org
+    http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           serviceName: petmotel-web
           servicePort: 80
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: petmotel-web-ingress
+#   namespace: petmotel
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           serviceName: petmotel-web
+#           servicePort: 80

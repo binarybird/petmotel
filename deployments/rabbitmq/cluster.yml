@@ -1,0 +1,12 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: hello-world
+spec:
+  replicas: 1
+  tls:
+    secretName: tls-secret
+    caSecretName: ca-secret
+  rabbitmq:
+    additionalConfig: |
+      ssl_options.fail_if_no_peer_cert = false

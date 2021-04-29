@@ -52,6 +52,20 @@ spec:
     app: petmotel-web
   type: NodePort
 ---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: petmotel-web-ingress-crt
+  namespace: petmotel
+spec:
+  secretName: petmotel-web-ingress-crt
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: petmotel.org
+  dnsNames:
+  - petmotel.org
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

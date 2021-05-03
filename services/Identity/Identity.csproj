@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="IdentityServer4" Version="4.1.2" />
       <PackageReference Include="MassTransit" Version="7.1.8" />
       <PackageReference Include="MassTransit.AspNetCore" Version="7.1.8" />
       <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.1.8" />

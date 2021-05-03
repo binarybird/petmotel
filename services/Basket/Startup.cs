@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +18,22 @@ namespace Basket
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Durable = true;
+                    cfg.AutoDelete = false;
+                    cfg.Exclusive = false;
+                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
+                    cfg.ReceiveEndpoint(RabbitMqConstants.BasketExchange,
+                        c =>
+                        {
+                            c.Handler<IExampleEmail>(ctx => { return Console.Out.WriteLineAsync(ctx.Message.Email); });
+                        });
+                });
+            });
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +43,7 @@ namespace Basket
             {
                 app.UseDeveloperExceptionPage();
             }
+
 
             app.UseRouting();
 

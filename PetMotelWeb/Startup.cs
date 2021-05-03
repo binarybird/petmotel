@@ -45,13 +45,13 @@ namespace PetMotelWeb
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
                     cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
-                    cfg.ReceiveEndpoint(RabbitMqConstants.TestQueue, c =>
-                    {
-                        c.Handler<IExampleEmail>(ctx =>
-                        {
-                            return Console.Out.WriteLineAsync(ctx.Message.Email);
-                        });
-                    });
+                    // cfg.ReceiveEndpoint(RabbitMqConstants.TestQueue, c =>
+                    // {
+                    //     c.Handler<IExampleEmail>(ctx =>
+                    //     {
+                    //         return Console.Out.WriteLineAsync(ctx.Message.Email);
+                    //     });
+                    // });
                 });
             });
             services.AddMassTransitHostedService();

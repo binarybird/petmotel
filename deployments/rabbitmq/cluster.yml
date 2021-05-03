@@ -1,7 +1,36 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ca-secret
+  namespace: petmotel
+spec:
+  secretName: ca-secret
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: petmotel.org
+  dnsNames:
+  - petmotel.org
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-secret
+  namespace: petmotel
+spec:
+  secretName: tls-secret
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: petmotel.org
+  dnsNames:
+  - petmotel.org
+---
 apiVersion: rabbitmq.com/v1beta1
 kind: RabbitmqCluster
 metadata:
-  name: hello-world
+  name: petmotel-mq
+  namespace: petmotel
 spec:
   replicas: 1
   tls:

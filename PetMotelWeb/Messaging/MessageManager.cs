@@ -25,6 +25,10 @@ namespace PetMotelWeb.Messaging
             var busControl = Bus.Factory.CreateUsingRabbitMq(config =>
             {
                 config.Host(RabbitMqConstants.RabbitMqUri);
+                config.ReceiveEndpoint(RabbitMqConstants.IdentityLoginLogoutQueue, x =>
+                {
+                    x.Bind(RabbitMqConstants.IdentityExchange);
+                });
             });
             
             _logger.LogInformation("Start Async");

@@ -1,5 +1,0 @@
-/home/james/git/petmotel/Common/obj/Debug/net5.0/Common.csprojAssemblyReference.cache
-/home/james/git/petmotel/Common/obj/Debug/net5.0/Common.GeneratedMSBuildEditorConfig.editorconfig
-/home/james/git/petmotel/Common/obj/Debug/net5.0/Common.AssemblyInfoInputs.cache
-/home/james/git/petmotel/Common/obj/Debug/net5.0/Common.AssemblyInfo.cs
-/home/james/git/petmotel/Common/obj/Debug/net5.0/Common.csproj.CoreCompileInputs.cache

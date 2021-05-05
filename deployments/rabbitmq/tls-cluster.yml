@@ -1,0 +1,13 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: petmotel-mq
+  namespace: petmotel
+spec:
+  replicas: 1
+  tls:
+    secretName: rabbitmq-tls-cert-secret
+    caSecretName: rabbitmq-ca-cert-secret
+  rabbitmq:
+    additionalConfig: |
+      ssl_options.fail_if_no_peer_cert = false

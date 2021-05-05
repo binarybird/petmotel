@@ -26,7 +26,10 @@ namespace Identity
                     cfg.Durable = true;
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
-                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
+                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri, cfg =>
+                    {
+                        
+                    });
                     cfg.ReceiveEndpoint(RabbitMqConstants.IdentityLoginLogoutQueue, c =>
                     {
                         c.Bind(RabbitMqConstants.IdentityExchange);

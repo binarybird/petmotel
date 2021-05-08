@@ -1,29 +1,6 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: rabbitmq-ca-cert
-  namespace: petmotel
-spec:
-  isCA: true
-  commonName: petmotel.svc.cluster.local
-  secretName: rabbitmq-ca-cert-secret
-  issuerRef:
-    name: selfsigned-ca-cluster-issuer
-    kind: ClusterIssuer
-    group: cert-manager.io
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: rabbitmq-tls-issuer
-  namespace: petmotel
-spec:
-  ca:
-    secretName: rabbitmq-ca-cert-secret
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
   name: rabbitmq-tls-cert
   namespace: petmotel
 spec:
@@ -40,25 +17,4 @@ spec:
     - petmotel-mq-nodes.petmotel.svc.cluster.local
     - petmotel-mq-server-0.petmotel.svc.cluster.local
   issuerRef:
-    name: rabbitmq-tls-issuer
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: rabbitmq-tls-cert-service
-  namespace: petmotel
-spec:
-  secretName: rabbitmq-tls-cert-service-secret
-  isCA: false
-  usages:
-    - server auth
-    - client auth
-  dnsNames: 
-    - cluster.local
-    - svc.cluster.local
-    - petmotel.svc.cluster.local
-    - petmotel-mq.petmotel.svc.cluster.local
-    - petmotel-mq-nodes.petmotel.svc.cluster.local
-    - petmotel-mq-server-0.petmotel.svc.cluster.local
-  issuerRef:
-    name: rabbitmq-tls-issuer
+    name: petmotel-tls-issuer

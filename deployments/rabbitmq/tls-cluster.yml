@@ -7,7 +7,10 @@ spec:
   replicas: 1
   tls:
     secretName: rabbitmq-tls-cert-secret
-    caSecretName: rabbitmq-ca-cert-secret
+    caSecretName: petmotel-ca-cert-secret
   rabbitmq:
     additionalConfig: |
-      ssl_options.fail_if_no_peer_cert = false
+      ssl_options.fail_if_no_peer_cert = true
+      ssl_options.verify = verify_peer
+      listeners.tcp = none
+      listeners.ssl.default = 5672

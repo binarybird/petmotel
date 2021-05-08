@@ -3,6 +3,7 @@ namespace Common
     public static class RabbitMqConstants
     {
         // public const string RabbitMqUri = "amqp://guest:guest@production-rabbitmqcluster-nodes.default.svc.cluster.local";
+        // public const string RabbitMqUri = "amqp://service:service12345@petmotel-mq.petmotel.svc.cluster.local:5672";
         public const string RabbitMqUri = "amqp://service:service12345@petmotel-mq.petmotel.svc.cluster.local:5672";
 
         public const string JsonMimeType = "application/json";

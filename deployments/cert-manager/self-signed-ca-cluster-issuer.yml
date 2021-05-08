@@ -4,3 +4,26 @@ metadata:
   name: selfsigned-ca-cluster-issuer
 spec:
   selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: petmotel-ca-cert
+  namespace: petmotel
+spec:
+  isCA: true
+  commonName: cluster.local
+  secretName: petmotel-ca-cert-secret
+  issuerRef:
+    name: selfsigned-ca-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: petmotel-tls-issuer
+  namespace: petmotel
+spec:
+  ca:
+    secretName: petmotel-ca-cert-secret

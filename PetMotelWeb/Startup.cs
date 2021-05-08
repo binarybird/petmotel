@@ -44,14 +44,20 @@ namespace PetMotelWeb
                     cfg.Durable = true;
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
-                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
-                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityAccountQueue, c =>
+                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri, h=>
                     {
-                        c.Handler<IExampleEmail>(ctx =>
+                        h.UseSsl(ssl =>
                         {
-                            return Console.Out.WriteLineAsync(ctx.Message.Email);
+                            ssl.Certificate = new System.Security.Cryptography.X509Certificates.X509Certificate("/tls/crt.pem");
                         });
                     });
+                    //cfg.ReceiveEndpoint(RabbitMqConstants.IdentityAccountQueue, c =>
+                    //{
+                    //   c.Handler<IExampleEmail>(ctx =>
+                    //    {
+                    //        return Console.Out.WriteLineAsync(ctx.Message.Email);
+                    //    });
+                    //});
                 });
             });
             // services.AddMassTransitHostedService();

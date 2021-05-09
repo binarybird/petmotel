@@ -25,7 +25,7 @@ namespace Basket
                     cfg.Durable = true;
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
-                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
+                    // cfg.Host(Common.RabbitMqConstants.RabbitMqUri);
                     cfg.ReceiveEndpoint(RabbitMqConstants.BasketExchange,
                         c =>
                         {

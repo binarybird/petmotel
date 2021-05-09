@@ -21,36 +21,36 @@ namespace PetMotelWeb.Messaging
     
         public async void SendExampleEmail(IExampleEmail email)
         {
-            _logger.LogInformation("Init bus control");
-            var busControl = Bus.Factory.CreateUsingRabbitMq(config =>
-            {
-                config.Host(RabbitMqConstants.RabbitMqUri);
-                config.ReceiveEndpoint(RabbitMqConstants.IdentityLoginLogoutQueue, x =>
-                {
-                    x.Bind(RabbitMqConstants.IdentityExchange);
-                });
-            });
-            
-            _logger.LogInformation("Start Async");
-            var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-            await busControl.StartAsync(source.Token);
-            try
-            {
-                _logger.LogInformation("Publishing");
-                await busControl.Publish<ExampleEmail>(new
-                {
-                    email = email.Email
-                });
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"{e.Message}\n{e.StackTrace}");
-            }
-            finally
-            {
-                await busControl.StopAsync();
-            }
-            _logger.LogInformation("Done");
+            // _logger.LogInformation("Init bus control");
+            // var busControl = Bus.Factory.CreateUsingRabbitMq(config =>
+            // {
+            //     config.Host(RabbitMqConstants.RabbitMqUri);
+            //     config.ReceiveEndpoint(RabbitMqConstants.IdentityLoginLogoutQueue, x =>
+            //     {
+            //         x.Bind(RabbitMqConstants.IdentityExchange);
+            //     });
+            // });
+            //
+            // _logger.LogInformation("Start Async");
+            // var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            // await busControl.StartAsync(source.Token);
+            // try
+            // {
+            //     _logger.LogInformation("Publishing");
+            //     await busControl.Publish<ExampleEmail>(new
+            //     {
+            //         email = email.Email
+            //     });
+            // }
+            // catch (Exception e)
+            // {
+            //     _logger.LogError($"{e.Message}\n{e.StackTrace}");
+            // }
+            // finally
+            // {
+            //     await busControl.StopAsync();
+            // }
+            // _logger.LogInformation("Done");
         }
     
         public void Dispose()

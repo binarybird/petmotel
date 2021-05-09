@@ -1,4 +1,7 @@
 using System;
+using System.IO;
+using System.Linq;
+using System.Net.Security;
 using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,10 +29,6 @@ namespace PetMotelWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // var bus = Bus.Factory.CreateUsingRabbitMq(config =>
-            // {
-            //     config.Host();
-            // })
             services.AddLogging(opt =>
             {
                 opt.AddConsole(c =>
@@ -37,6 +36,33 @@ namespace PetMotelWeb
                     c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
                 });
             });
+
+            string user;
+            string pass;
+            string certPath = null;
+            string keyPath = null;
+            string caPath = null;
+            try
+            {
+                user = Environment.GetEnvironmentVariable("RMQU");
+                pass = Environment.GetEnvironmentVariable("RMQP");
+                certPath = Environment.GetEnvironmentVariable("CRTP");
+                keyPath = Environment.GetEnvironmentVariable("KP");
+                caPath = Environment.GetEnvironmentVariable("CAP");
+                if (String.IsNullOrEmpty(certPath))
+                {
+                    certPath = null;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                user = "null";
+                pass = "null";
+            }
+            
+            Console.WriteLine($"Got {user}, {pass}, {certPath}, {keyPath}, {caPath}");
+
             services.AddMassTransit(x =>
             {
                 x.UsingRabbitMq((ctx, cfg) =>
@@ -44,12 +70,19 @@ namespace PetMotelWeb
                     cfg.Durable = true;
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
-                    cfg.Host(Common.RabbitMqConstants.RabbitMqUri, h=>
+                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(user, pass), h=>
                     {
-                        h.UseSsl(ssl =>
+                        if (certPath != null)
                         {
-                            ssl.Certificate = new System.Security.Cryptography.X509Certificates.X509Certificate("/tls/crt.pem");
-                        });
+                            h.UseSsl(ssl =>
+                            {
+                                ssl.ServerName = "cluster.local";
+                                ssl.Certificate =
+                                    new System.Security.Cryptography.X509Certificates.X509Certificate(certPath);
+                                // ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch |
+                                //                       SslPolicyErrors.RemoteCertificateChainErrors);
+                            });
+                        }
                     });
                     //cfg.ReceiveEndpoint(RabbitMqConstants.IdentityAccountQueue, c =>
                     //{
@@ -60,8 +93,7 @@ namespace PetMotelWeb
                     //});
                 });
             });
-            // services.AddMassTransitHostedService();
-            
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

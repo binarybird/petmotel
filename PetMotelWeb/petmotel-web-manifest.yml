@@ -27,17 +27,6 @@ spec:
             name: petmotel-web
             imagePullPolicy: Always 
             resources: {}
-            env:
-              - name: RMQU
-                value: "/rabbitmq/username"
-              - name: RMQP
-                value: "/rabbitmq/password"
-              - name: CRTP
-                value: "/tls/tls.crt"
-              - name: KP
-                value: "/tls/tls.key"
-              - name: CAP
-                value: "/tls/ca.crt"    
             ports: 
               - name: http
                 containerPort: 80
@@ -55,13 +44,6 @@ spec:
           - name: rabbitmq
             secret:
               secretName: petmotel-mq-default-user
-#          - name: tls
-#            csi:
-#              driver: csi.cert-manager.io
-#              volumeAttributes:
-#                    csi.cert-manager.io/issuer-name: petmotel-tls-issuer
-#                    csi.cert-manager.io/common-name: cluster.local
-#                    csi.cert-manager.io/dns-names: cluster.local,svc.cluster.local,petmotel.svc.cluster.local,petmotel-mq.petmotel.svc.cluster.local,petmotel-mq-nodes.petmotel.svc.cluster.local,petmotel-mq-server-0.petmotel.svc.cluster.local
 status: {} 
 ---
 ﻿apiVersion: v1

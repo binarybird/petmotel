@@ -9,4 +9,4 @@ watch kubectl get po,svc -A
 kubectl apply -f lets-encrypt-staging-ca-cluster-issuer.yml
 kubectl apply -f self-signed-ca-cluster-issuer.yml
 kubectl apply -f rabbit-mq-cert.yml
-kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager-csi/master/deploy/cert-manager-csi-driver.yaml
+#kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager-csi/master/deploy/cert-manager-csi-driver.yaml

@@ -30,6 +30,20 @@ spec:
             ports: 
               - name: http
                 containerPort: 80
+            volumeMounts:
+              - mountPath: "/tls"
+                name: tls
+                readOnly: true
+              - mountPath: "/rabbitmq"
+                name: rabbitmq
+                readOnly: true
+        volumes:
+          - name: tls
+            secret:
+              secretName: rabbitmq-tls-cert-secret
+          - name: rabbitmq
+            secret:
+              secretName: petmotel-mq-default-user
 status: {} 
 ---
 ﻿apiVersion: v1

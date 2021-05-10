@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,39 +30,39 @@ namespace PetMotelWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(opt =>
-            {
-                opt.AddConsole(c =>
-                {
-                    c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
-                });
-            });
+            services.AddLogging(opt => { opt.AddConsole(c => { c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] "; }); });
 
-            string user;
-            string pass;
+            string rmqUserPath = null;
+            string rmqPassPath = null;
             string certPath = null;
             string keyPath = null;
             string caPath = null;
+            string rmqUser = null;
+            string rmqPass = null;
+            string cert = null;
+            string key = null;
             try
             {
-                user = Environment.GetEnvironmentVariable("RMQU");
-                pass = Environment.GetEnvironmentVariable("RMQP");
+                rmqUserPath = Environment.GetEnvironmentVariable("RMQU");
+                rmqPassPath = Environment.GetEnvironmentVariable("RMQP");
+
+                rmqUser = File.ReadAllText(rmqUserPath);
+                rmqPass = File.ReadAllText(rmqPassPath);
+
                 certPath = Environment.GetEnvironmentVariable("CRTP");
                 keyPath = Environment.GetEnvironmentVariable("KP");
                 caPath = Environment.GetEnvironmentVariable("CAP");
-                if (String.IsNullOrEmpty(certPath))
-                {
-                    certPath = null;
-                }
+
+                cert = File.ReadAllText(certPath);
+                key = File.ReadAllText(keyPath);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                user = "null";
-                pass = "null";
             }
-            
-            Console.WriteLine($"Got {user}, {pass}, {certPath}, {keyPath}, {caPath}");
+
+            Console.WriteLine(
+                $"Got {rmqUserPath}, {rmqUser}, {rmqPassPath}, {rmqPass}, {certPath}, {keyPath}, {caPath}");
 
             services.AddMassTransit(x =>
             {
@@ -70,19 +71,15 @@ namespace PetMotelWeb
                     cfg.Durable = true;
                     cfg.AutoDelete = false;
                     cfg.Exclusive = false;
-                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(user, pass), h=>
+                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
                     {
-                        if (certPath != null)
+                        h.UseSsl(ssl =>
                         {
-                            h.UseSsl(ssl =>
-                            {
-                                ssl.ServerName = "cluster.local";
-                                ssl.Certificate =
-                                    new System.Security.Cryptography.X509Certificates.X509Certificate(certPath);
-                                // ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch |
-                                //                       SslPolicyErrors.RemoteCertificateChainErrors);
-                            });
-                        }
+                            ssl.ServerName = "cluster.local";
+                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+                            ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch |
+                                                  SslPolicyErrors.RemoteCertificateChainErrors);
+                        });
                     });
                     //cfg.ReceiveEndpoint(RabbitMqConstants.IdentityAccountQueue, c =>
                     //{
@@ -128,10 +125,7 @@ namespace PetMotelWeb
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapRazorPages();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
         }
     }
 }

@@ -29,17 +29,11 @@ spec:
             resources: {}
             env:
               - name: RMQU
-                valueFrom:
-                  secretKeyRef:
-                    name: petmotel-mq-default-user
-                    key: username
+                value: "/rabbitmq/username"
               - name: RMQP
-                valueFrom:
-                  secretKeyRef:
-                    name: petmotel-mq-default-user
-                    key: password
+                value: "/rabbitmq/password"
               - name: CRTP
-                value: "/tls/ca.crt"
+                value: "/tls/tls.crt"
               - name: KP
                 value: "/tls/tls.key"
               - name: CAP
@@ -51,10 +45,16 @@ spec:
               - mountPath: "/tls"
                 name: tls
                 readOnly: true
+              - mountPath: "/rabbitmq"
+                name: rabbitmq
+                readOnly: true
         volumes:
           - name: tls
             secret:
               secretName: rabbitmq-tls-cert-secret
+          - name: rabbitmq
+            secret:
+              secretName: petmotel-mq-default-user
 #          - name: tls
 #            csi:
 #              driver: csi.cert-manager.io

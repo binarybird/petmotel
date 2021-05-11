@@ -18,7 +18,7 @@ namespace PetMotelWeb.Messaging
         public async Task Consume(ConsumeContext<IIdentityReply> context)
         {
             IIdentityReply reply = context.Message;
-            await Console.Out.WriteLineAsync($"Got Reply: {reply.Message} {reply.MessageUuid} {reply.OriginatingMessageUuid}");
+            await Console.Out.WriteLineAsync($"Got Reply: {reply.Message} {reply.UserUuid}");
         }
     }
 }

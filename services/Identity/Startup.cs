@@ -7,6 +7,7 @@ using Common;
 using Common.Messaging;
 using Common.Messaging.Exchanges;
 using Identity.Messaging;
+using Identity.Messaging.Commands;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,7 +45,6 @@ namespace Identity
                     });
                     cfg.ReceiveEndpoint("identity_login_queue", e =>
                     {
-                        e.BindQueue = true;
                         e.Consumer<LoginConsumer>();
                     });
                 });

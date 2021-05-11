@@ -24,24 +24,22 @@ namespace PetMotelWeb.Pages
 
         }
 
-        public void OnPost()
+        public async void OnPost()
         {
             var user = Request.Form["search"];
             _logger.LogInformation($"Form: {user}");
         
             _logger.LogInformation("Start");
             var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-
-            Task send = _bus.Publish<ILogin>(new
+            
+            var sendEndpoint = await _bus.GetSendEndpoint(new Uri("queue:identity_login_queue"));
+            await sendEndpoint.Send<ILogin>(new
             {
                 UserUuid = Guid.NewGuid().ToString(),
-                MessageUuid = Guid.NewGuid().ToString(),
                 UserName = user,
                 Password = "blah",
                 RememberMe = true
             }, source.Token);
-
-            send.Wait();
 
             _logger.LogInformation("Done");
         

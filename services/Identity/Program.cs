@@ -10,26 +10,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Identity
 {
-    class Program
+    public class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var builder = new HostBuilder()
-                .ConfigureServices((hostContext, services) => { services.AddHostedService<MessageQueueService>(); });
-
-            await builder
-                .RunConsoleAsync();
+            CreateHostBuilder(args).Build().Run();
         }
+    
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
-    // public class Program
-    // {
-    //     public static void Main(string[] args)
-    //     {
-    //         CreateHostBuilder(args).Build().Run();
-    //     }
-    //
-    //     public static IHostBuilder CreateHostBuilder(string[] args) =>
-    //         Host.CreateDefaultBuilder(args)
-    //             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    // }
 }

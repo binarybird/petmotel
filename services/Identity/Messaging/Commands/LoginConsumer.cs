@@ -7,19 +7,6 @@ using MassTransit.Definition;
 
 namespace Identity.Messaging.Commands
 {
-    public class LoginConsumerDefinition : ConsumerDefinition<LoginConsumer>
-    {
-        public LoginConsumerDefinition()
-        {
-            EndpointName = "identity_reply_queue";
-
-            ConcurrentMessageLimit = 8;
-        }
-        protected override void ConfigureConsumer(IReceiveEndpointConfigurator endpointConfigurator, IConsumerConfigurator<LoginConsumer> consumerConfigurator)
-        {
-            base.ConfigureConsumer(endpointConfigurator, consumerConfigurator);
-        }
-    }
     public class LoginConsumer : IConsumer<ILogin>
     {
         public LoginConsumer()
@@ -30,7 +17,7 @@ namespace Identity.Messaging.Commands
         public async Task Consume(ConsumeContext<ILogin> context)
         {
             ILogin login = context.Message;
-            Console.Out.WriteLine($"Got Login: {login.UserName} {login.Password} {login.UserUuid}");
+            Console.Out.WriteLine($"Got LoginConsumer: {login.UserName} {login.Password} {login.UserUuid}");
             
             Console.Out.WriteLine("Replying");
 

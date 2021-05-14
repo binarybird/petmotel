@@ -55,6 +55,7 @@ namespace PetMotelWeb
 
                 x.AddRequestClient<ILogin>(serviceAddress, timeout);
             });
+            services.AddMassTransitHostedService();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

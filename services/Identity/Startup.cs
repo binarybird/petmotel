@@ -30,36 +30,25 @@ namespace Identity
             
             var (cert, key, rmqUser, rmqPass) = Common.RmqInitializer.Initialize();
 
-            
-            
-            // services.AddMassTransit(x =>
-            // {
-            //     x.UsingRabbitMq((ctx, cfg) =>
-            //     {
-            //         cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
-            //         {
-            //             h.UseSsl(ssl =>
-            //             {
-            //                 ssl.ServerName = "cluster.local";
-            //                 ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
-            //             });
-            //         });
-            //         cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
-            //         {
-            //             e.Handler<ILogin>(c =>
-            //             {
-            //                 Console.Out.WriteLine("Got "+c.Message);
-            //                 return c.RespondAsync<IIdentityReply>(new
-            //                 {
-            //                     UserUuid = c.Message.UserUuid,
-            //                     StatusCode = 200,
-            //                     Success = false,
-            //                     Message = "something",
-            //                 });
-            //             });
-            //         });
-            //     });
-            // });
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
+                    {
+                        h.UseSsl(ssl =>
+                        {
+                            ssl.ServerName = "cluster.local";
+                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+                        });
+                    });
+                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
+                    {
+                        e.Consumer<LoginConsumer>();
+                    });
+                });
+            });
+            services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

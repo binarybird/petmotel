@@ -24,7 +24,7 @@ spec:
           - name: regcred 
         containers: 
           - image: docker.io/binarybird/petmotel-identity 
-            name: petmotel-web
+            name: petmotel-identity
             imagePullPolicy: Always 
             resources: {} 
             ports: 

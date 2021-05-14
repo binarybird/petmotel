@@ -1,9 +1,12 @@
-﻿namespace Common.Messaging.Exchanges
+﻿using System;
+
+namespace Common.Messaging.Exchanges
 {
     namespace Identity
     {
         public interface ILogin
         {
+            Guid MessageId { get; set; }
             string UserUuid { get; set; }
             string UserName { get; set; }
             string Password { get; set; }
@@ -28,6 +31,7 @@
 
         public interface IIdentityReply
         {
+            Guid MessageId { get; set; }
             string UserUuid { get; set; }
             int StatusCode { get; set; }
             bool Success { get; set; }

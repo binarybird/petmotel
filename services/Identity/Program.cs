@@ -4,20 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Identity
 {
-    public class Program
+    class Program
     {
-        public static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-        }
+            var builder = new HostBuilder()
+                .ConfigureServices((hostContext, services) => { services.AddHostedService<MessageQueueService>(); });
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            await builder
+                .RunConsoleAsync();
+        }
     }
+    // public class Program
+    // {
+    //     public static void Main(string[] args)
+    //     {
+    //         CreateHostBuilder(args).Build().Run();
+    //     }
+    //
+    //     public static IHostBuilder CreateHostBuilder(string[] args) =>
+    //         Host.CreateDefaultBuilder(args)
+    //             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+    // }
 }

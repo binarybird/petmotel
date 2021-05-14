@@ -40,9 +40,6 @@ namespace PetMotelWeb
             {
                 x.UsingRabbitMq((ctx, cfg) =>
                 {
-                    cfg.Durable = true;
-                    cfg.AutoDelete = false;
-                    cfg.Exclusive = false;
                     cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
                     {
                         h.UseSsl(ssl =>
@@ -51,12 +48,12 @@ namespace PetMotelWeb
                             ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
                         });
                     });
-                    cfg.ReceiveEndpoint("identity_reply_queue", e =>
-                    {
-                        e.BindQueue = true;
-                        e.Consumer<IdentityReplyConsumer>();
-                    });
                 });
+                
+                var timeout = TimeSpan.FromSeconds(10);
+                var serviceAddress = new Uri(RabbitMqConstants.GetServiceUri(RabbitMqConstants.IdentityService));
+
+                x.AddRequestClient<ILogin>(serviceAddress, timeout);
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>

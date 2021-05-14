@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Common;
 using Common.Messaging;
 using Common.Messaging.Exchanges;
+using Common.Messaging.Exchanges.Identity;
 using Identity.Messaging;
 using Identity.Messaging.Commands;
 using MassTransit;
+using MassTransit.Registration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,27 +30,36 @@ namespace Identity
             
             var (cert, key, rmqUser, rmqPass) = Common.RmqInitializer.Initialize();
 
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq((ctx, cfg) =>
-                {
-                    cfg.Durable = true;
-                    cfg.AutoDelete = false;
-                    cfg.Exclusive = false;
-                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
-                    {
-                        h.UseSsl(ssl =>
-                        {
-                            ssl.ServerName = "cluster.local";
-                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
-                        });
-                    });
-                    cfg.ReceiveEndpoint("identity_login_queue", e =>
-                    {
-                        e.Consumer<LoginConsumer>();
-                    });
-                });
-            });
+            
+            
+            // services.AddMassTransit(x =>
+            // {
+            //     x.UsingRabbitMq((ctx, cfg) =>
+            //     {
+            //         cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
+            //         {
+            //             h.UseSsl(ssl =>
+            //             {
+            //                 ssl.ServerName = "cluster.local";
+            //                 ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+            //             });
+            //         });
+            //         cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
+            //         {
+            //             e.Handler<ILogin>(c =>
+            //             {
+            //                 Console.Out.WriteLine("Got "+c.Message);
+            //                 return c.RespondAsync<IIdentityReply>(new
+            //                 {
+            //                     UserUuid = c.Message.UserUuid,
+            //                     StatusCode = 200,
+            //                     Success = false,
+            //                     Message = "something",
+            //                 });
+            //             });
+            //         });
+            //     });
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

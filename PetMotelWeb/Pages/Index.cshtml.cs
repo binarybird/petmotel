@@ -30,21 +30,27 @@ namespace PetMotelWeb.Pages
         {
             var user = Request.Form["search"];
             _logger.LogInformation($"Form: {user}");
-        
+            
             _logger.LogInformation("Start");
             
             try
             {
+                var s = Guid.NewGuid().ToString();
                 object l = new
                 {
-                    UserUuid = Guid.NewGuid().ToString(),
+                    UserUuid = s,
                     UserName = user,
                     Password = "blahone",
                     RememberMe = true
                 };
+
+                _logger.LogInformation($"Sending: {s}");
+                
                 var result = await _requestClient.GetResponse<IIdentityReply>(l);
 
-                Console.Out.WriteLine($"Got reply {result.Message}");
+                
+                
+                Console.Out.WriteLine($"Got reply {result.Message.UserUuid}");
             }
             catch (RequestTimeoutException e)
             {

@@ -38,8 +38,7 @@ namespace Identity.Messaging
                 Success = false,
                 Message = "something",
             });
-
-
+            
             _logger.LogInformation("Done");
         }
     }

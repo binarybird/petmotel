@@ -14,17 +14,12 @@ namespace Identity.Messaging
     {
         private readonly ILogger<LoginConsumer> _logger;
 
-        public LoginConsumer(IServiceCollection services)
+        public LoginConsumer()
         {
-            object? first = services.Where(w => w.ServiceType == typeof(Microsoft.Extensions.Logging.ILoggerFactory))
-                .Select(s => s.ImplementationInstance).First();
-            if (first is ILoggerFactory factory)
+            using (var serviceScope = ServiceActivator.GetScope())
             {
-                _logger = factory.CreateLogger<LoginConsumer>();
-            }
-            else
-            {
-                _logger = null;
+                ILoggerFactory loggerFactory = serviceScope.ServiceProvider.GetService<ILoggerFactory>();
+                _logger = loggerFactory.CreateLogger<LoginConsumer>();
             }
         }
 
@@ -32,11 +27,9 @@ namespace Identity.Messaging
         {
             ILogin login = context.Message;
 
-            Console.Out.Write("Login consumer called");
-            _logger?.LogInformation($"Got LoginConsumer: {login.UserName} {login.Password} {login.UserUuid}");
-
-            _logger?.LogInformation("Replying");
-
+            _logger.LogInformation($"Got LoginConsumer: {login.UserName} {login.Password} {login.UserUuid}");
+            
+            _logger.LogInformation("Replying");
 
             await context.RespondAsync<IIdentityReply>(new
             {
@@ -46,7 +39,8 @@ namespace Identity.Messaging
                 Message = "something",
             });
 
-            _logger?.LogInformation("Done");
+
+            _logger.LogInformation("Done");
         }
     }
 }

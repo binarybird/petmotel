@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Common.Messaging;
 using Identity.Messaging;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using IHost = Microsoft.Extensions.Hosting.IHost;
 
 namespace Identity
 {
@@ -16,28 +18,19 @@ namespace Identity
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost build = CreateHostBuilder(args).Build();
+            
+            ServiceActivator.Configure(build.Services);
+            
+            build.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                // .ConfigureLogging(logging =>
-                // {
-                //     logging.ClearProviders();
-                //     logging.AddConsole();
-                //     logging.AddConsoleFormatter<>()
-                // })
                 .ConfigureServices(ConfigureServices);
-
+        
         public static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
-            // services.AddLogging(builder =>
-            // {
-            //     builder.AddConsole();
-            // });
-            services.AddHostedService<Worker>();
-
-
             var (cert, key, rmqUser, rmqPass) = Common.RmqInitializer.Initialize();
             services.AddMassTransit(x =>
             {
@@ -54,7 +47,7 @@ namespace Identity
                     
                     cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
                     {
-                        e.Consumer<LoginConsumer>(() => new LoginConsumer(services));
+                        e.Consumer<LoginConsumer>();
                     });
                 });
             });

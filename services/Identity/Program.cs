@@ -4,8 +4,13 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Common.Messaging;
+using Identity.Auth;
+using Identity.Database;
+using Identity.Entity;
 using Identity.Messaging;
 using MassTransit;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -52,6 +57,19 @@ namespace Identity
                 });
             });
             services.AddMassTransitHostedService();
+            
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddLogging();
+
+            services.AddScoped(
+                typeof(IAuthentication),
+                typeof(Authentication));
         }
     }
 }

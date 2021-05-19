@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: petmotel-basket
+  name: petmotel-basket
+  namespace: petmotel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petmotel-basket
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: petmotel-basket
+    spec:
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - image: docker.io/binarybird/petmotel-basket
+          name: petmotel-basket
+          imagePullPolicy: Always
+          resources: {}
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - mountPath: "/tls"
+              name: tls
+              readOnly: true
+            - mountPath: "/rabbitmq"
+              name: rabbitmq
+              readOnly: true
+      volumes:
+        - name: tls
+          secret:
+            secretName: rabbitmq-tls-cert-secret
+        - name: rabbitmq
+          secret:
+            secretName: petmotel-mq-default-user
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petmotel-basket
+  namespace: petmotel
+  labels:
+    run: petmotel-basket
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: petmotel-basket
+  type: NodePort

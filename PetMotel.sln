@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{59
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetMotel.Basket", "services\PetMotel.Basket\PetMotel.Basket.csproj", "{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetMotel.Identity", "services\PetMotel.Identity\PetMotel.Identity.csproj", "{AE8A8C08-2867-4CA4-9F6B-283813357341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetMotel.Identity", "services\PetMotel.Identity\PetMotel.Identity.csproj", "{B9990C45-4AA0-42FF-9B91-2DAB46B43880}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,18 +37,18 @@ Global
 		{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE8A8C08-2867-4CA4-9F6B-283813357341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE8A8C08-2867-4CA4-9F6B-283813357341}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE8A8C08-2867-4CA4-9F6B-283813357341}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE8A8C08-2867-4CA4-9F6B-283813357341}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9990C45-4AA0-42FF-9B91-2DAB46B43880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9990C45-4AA0-42FF-9B91-2DAB46B43880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9990C45-4AA0-42FF-9B91-2DAB46B43880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9990C45-4AA0-42FF-9B91-2DAB46B43880}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
-		{AE8A8C08-2867-4CA4-9F6B-283813357341} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
 		{C8A1225E-111D-4B41-8375-0010451C7F04} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
+		{4EA9FD82-BF2A-49DF-BC7D-7330410DC0DC} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
+		{B9990C45-4AA0-42FF-9B91-2DAB46B43880} = {597C6679-2D6B-4B8A-A627-4A76F8CC3F22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3610599A-8ABE-4801-BA3D-594E44EF252B}

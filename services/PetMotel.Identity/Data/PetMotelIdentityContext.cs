@@ -10,7 +10,7 @@ using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity.Data
 {
-    public class PetMotelIdentityContext : IdentityDbContext<PetMotelUser>
+    public class PetMotelIdentityContext : IdentityDbContext<PetMotelUser, PetMotelRole, string>
     {
         public PetMotelIdentityContext(DbContextOptions<PetMotelIdentityContext> options)
             : base(options)

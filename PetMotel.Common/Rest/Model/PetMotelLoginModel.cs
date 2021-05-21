@@ -4,7 +4,7 @@ namespace PetMotel.Common.Rest.Model
 {
     public class PetMotelLoginModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [EmailAddress]

@@ -138,9 +138,9 @@ namespace PetMotel.Identity.Controllers
             return NoContent();
         }
 
-        private bool LoginModelExists(int id)
-        {
-            return _context.LoginModel.Any(e => e.Id == id);
-        }
+        // private bool LoginModelExists(int id)
+        // {
+        //     return _context.LoginModel.Any(e => e.Id == id);
+        // }
     }
 }

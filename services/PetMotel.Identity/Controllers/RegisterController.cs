@@ -23,19 +23,22 @@ namespace PetMotel.Identity.Controllers
         private readonly ILogger<PetMotelRegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PetMotelIdentityContext _context;
-
+        private RoleManager<PetMotelRole> _roleManager;
+        
         public RegisterController(
             PetMotelIdentityContext context,
             UserManager<PetMotelUser> userManager,
             SignInManager<PetMotelUser> signInManager,
             ILogger<PetMotelRegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<PetMotelRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
@@ -47,6 +50,7 @@ namespace PetMotel.Identity.Controllers
 
             var user = new PetMotelUser { UserName = petMotelRegisterModel.Email, Email = petMotelRegisterModel.Email };
             var result = await _userManager.CreateAsync(user, petMotelRegisterModel.Password);
+            
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");

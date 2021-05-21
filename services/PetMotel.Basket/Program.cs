@@ -25,27 +25,29 @@ namespace PetMotel.Basket
         
         public static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
-            var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize();
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq((ctx, cfg) =>
-                {
-                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
-                    {
-                        h.UseSsl(ssl =>
-                        {
-                            ssl.ServerName = "cluster.local";
-                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
-                        });
-                    });
-                    
-                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
-                    {
-                        e.Consumer<LoginConsumer>();
-                    });
-                });
-            });
-            services.AddMassTransitHostedService();
+            // RabbitMqOptions rmqo = new RabbitMqOptions();
+            // Configuration.GetSection(RabbitMqOptions.RabbitMq).Bind(rmqo);
+            // var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize(rmqo);
+            // services.AddMassTransit(x =>
+            // {
+            //     x.UsingRabbitMq((ctx, cfg) =>
+            //     {
+            //         cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
+            //         {
+            //             h.UseSsl(ssl =>
+            //             {
+            //                 ssl.ServerName = "cluster.local";
+            //                 ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+            //             });
+            //         });
+            //         
+            //         cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
+            //         {
+            //             e.Consumer<LoginConsumer>();
+            //         });
+            //     });
+            // });
+            // services.AddMassTransitHostedService();
         }
     }
 }

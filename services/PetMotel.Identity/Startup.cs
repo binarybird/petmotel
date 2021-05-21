@@ -37,8 +37,10 @@ namespace PetMotel.Identity
                 //options.UseSqlServer(context.Configuration.GetConnectionString("PetMotelIdentityContextConnection"))
                 options.UseInMemoryDatabase(databaseName: "PetMotelIdentity"));
 
-            services.AddDefaultIdentity<PetMotelUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<PetMotelUser, PetMotelRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PetMotelIdentityContext>();
+            // services.AddDefaultIdentity<PetMotelUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //     .AddEntityFrameworkStores<PetMotelIdentityContext>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -76,7 +78,10 @@ namespace PetMotel.Identity
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            UserManager<PetMotelUser> userManager, 
+            RoleManager<PetMotelRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -93,6 +98,8 @@ namespace PetMotel.Identity
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            DataGenerator.SeedData(userManager, roleManager);
         }
     }
 }

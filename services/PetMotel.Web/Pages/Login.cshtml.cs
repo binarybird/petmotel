@@ -39,6 +39,7 @@ namespace PetMotel.Web.Pages
             if (this.ModelState.IsValid)
             {
                 ClaimsPrincipal principal = this.User;
+                
 
                 int y = 0;
             }

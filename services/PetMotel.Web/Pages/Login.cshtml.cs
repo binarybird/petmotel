@@ -13,5 +13,12 @@ namespace PetMotel.Web.Pages
         {
 
         }
+
+        public void OnPost()
+        {
+            string user = Request.Form["username"];
+            string pass = Request.Form["password"];
+            bool rememberMe = Boolean.Parse(Request.Form["rememberme"]);
+        }
     }
 }

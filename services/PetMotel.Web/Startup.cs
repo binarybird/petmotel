@@ -31,28 +31,28 @@ namespace PetMotel.Web
             services.AddRazorPages();
             services.AddLogging(opt => { opt.AddConsole(c => { c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] "; }); });
 
-            var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize();
-
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq((ctx, cfg) =>
-                {
-                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
-                    {
-                        h.UseSsl(ssl =>
-                        {
-                            ssl.ServerName = "cluster.local";
-                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
-                        });
-                    });
-                });
-                
-                var timeout = TimeSpan.FromSeconds(10);
-                var serviceAddress = new Uri(RabbitMqConstants.GetServiceUri(RabbitMqConstants.IdentityService));
-
-                x.AddRequestClient<ILogin>(serviceAddress, timeout);
-            });
-            services.AddMassTransitHostedService();
+            // var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize();
+            //
+            // services.AddMassTransit(x =>
+            // {
+            //     x.UsingRabbitMq((ctx, cfg) =>
+            //     {
+            //         cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
+            //         {
+            //             h.UseSsl(ssl =>
+            //             {
+            //                 ssl.ServerName = "cluster.local";
+            //                 ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+            //             });
+            //         });
+            //     });
+            //     
+            //     var timeout = TimeSpan.FromSeconds(10);
+            //     var serviceAddress = new Uri(RabbitMqConstants.GetServiceUri(RabbitMqConstants.IdentityService));
+            //
+            //     x.AddRequestClient<ILogin>(serviceAddress, timeout);
+            // });
+            // services.AddMassTransitHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

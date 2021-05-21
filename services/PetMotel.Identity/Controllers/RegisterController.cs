@@ -20,7 +20,7 @@ namespace PetMotel.Identity.Controllers
     {
         private readonly SignInManager<PetMotelUser> _signInManager;
         private readonly UserManager<PetMotelUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<PetMotelRegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PetMotelIdentityContext _context;
 
@@ -28,7 +28,7 @@ namespace PetMotel.Identity.Controllers
             PetMotelIdentityContext context,
             UserManager<PetMotelUser> userManager,
             SignInManager<PetMotelUser> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<PetMotelRegisterModel> logger,
             IEmailSender emailSender)
         {
             _context = context;
@@ -39,14 +39,14 @@ namespace PetMotel.Identity.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<LoginModel>> PostRegisterModel(RegisterModel registerModel)
+        public async Task<ActionResult<PetMotelLoginModel>> PostRegisterModel(PetMotelRegisterModel petMotelRegisterModel)
         {
             var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             //TODO - clean and validate here
 
-            var user = new PetMotelUser { UserName = registerModel.Email, Email = registerModel.Email };
-            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            var user = new PetMotelUser { UserName = petMotelRegisterModel.Email, Email = petMotelRegisterModel.Email };
+            var result = await _userManager.CreateAsync(user, petMotelRegisterModel.Password);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
@@ -56,12 +56,12 @@ namespace PetMotel.Identity.Controllers
 
                 string callbackUrl = $"www.petmotel.org/user/{user.Id}/register/{code}";
 
-                await _emailSender.SendEmailAsync(registerModel.Email, "Confirm your email",
+                await _emailSender.SendEmailAsync(petMotelRegisterModel.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = registerModel.Email, returnUrl = "returnUrl" });
+                    return RedirectToPage("RegisterConfirmation", new { email = petMotelRegisterModel.Email, returnUrl = "returnUrl" });
                 }
                 else
                 {

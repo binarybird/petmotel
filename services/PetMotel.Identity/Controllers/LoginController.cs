@@ -20,10 +20,10 @@ namespace PetMotel.Identity.Controllers
         private readonly PetMotelIdentityContext _context;
         private readonly UserManager<PetMotelUser> _userManager;
         private readonly SignInManager<PetMotelUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+        private readonly ILogger<PetMotelLoginModel> _logger;
 
         public LoginController(SignInManager<PetMotelUser> signInManager,
-            ILogger<LoginModel> logger,
+            ILogger<PetMotelLoginModel> logger,
             UserManager<PetMotelUser> userManager,
             PetMotelIdentityContext context)
         {
@@ -35,14 +35,14 @@ namespace PetMotel.Identity.Controllers
 
         // GET: api/Login
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LoginModel>>> GetLoginModel()
+        public async Task<ActionResult<IEnumerable<PetMotelLoginModel>>> GetLoginModel()
         {
             return await _context.LoginModel.ToListAsync();
         }
 
         // GET: api/Login/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LoginModel>> GetLoginModel(int id)
+        public async Task<ActionResult<PetMotelLoginModel>> GetLoginModel(int id)
         {
             var loginModel = await _context.LoginModel.FindAsync(id);
 
@@ -88,17 +88,17 @@ namespace PetMotel.Identity.Controllers
         // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<LoginModel>> PostLoginModel(LoginModel loginModel)
+        public async Task<ActionResult<PetMotelLoginModel>> PostLoginModel(PetMotelLoginModel petMotelLoginModel)
         {
             var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(petMotelLoginModel.Email, petMotelLoginModel.Password, petMotelLoginModel.RememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
-                return CreatedAtAction("GetLoginModel", new { id = loginModel.Id }, loginModel);
+                return CreatedAtAction("GetLoginModel", new { id = petMotelLoginModel.Id }, petMotelLoginModel);
             }
             if (result.RequiresTwoFactor)
             {
@@ -119,7 +119,7 @@ namespace PetMotel.Identity.Controllers
             //    _context.LoginModel.Add(loginModel);
             //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLoginModel", new { id = loginModel.Id }, loginModel);
+            return CreatedAtAction("GetLoginModel", new { id = petMotelLoginModel.Id }, petMotelLoginModel);
         }
 
         // DELETE: api/Login/5

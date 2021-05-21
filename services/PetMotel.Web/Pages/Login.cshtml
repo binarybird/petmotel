@@ -6,7 +6,8 @@
 
 <h1>Login</h1>
 <form method="post">
-    <p>Username:<input type="text" name="username"></p><br/>
-    <p>Password:<input type="password" name="password"></p><br/>
-    <p>Remember Me:<input type="checkbox" name="rememberme"></p><br/>
+    <div>Username:</div><input asp-for="PMLoginModel.Email"><br/>
+    <div>Password:</div><input asp-for="PMLoginModel.Password"><br/>
+    <div>Remember Me:</div><input asp-for="PMLoginModel.RememberMe"><br/>
+    <input type="submit" name="Submit">
 </form>

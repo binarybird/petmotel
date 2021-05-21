@@ -1,6 +1,6 @@
 ﻿namespace PetMotel.Common.Rest.Model
 {
-    public class RegisteredModel
+    public class PetMotelRegisteredModel
     {
         
     }

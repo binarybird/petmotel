@@ -25,6 +25,6 @@ namespace PetMotel.Identity.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<LoginModel> LoginModel { get; set; }
+        public DbSet<PetMotelLoginModel> LoginModel { get; set; }
     }
 }

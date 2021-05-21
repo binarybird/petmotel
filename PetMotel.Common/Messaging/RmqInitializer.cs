@@ -5,12 +5,12 @@ namespace PetMotel.Common.Messaging
 {
     public class RmqInitializer
     {
-        public static (string cert, string key, string rmqUser, string rmqPass) Initialize()
+        public static (string cert, string key, string rmqUser, string rmqPass) Initialize(RabbitMqOptions options)
         {
-            string cert = File.ReadAllText(RabbitMqConstants.CertPath);
-            string key = File.ReadAllText(RabbitMqConstants.KeyPath);
-            string rmqUser = File.ReadAllText(RabbitMqConstants.RmqUserPath);
-            string rmqPass = File.ReadAllText(RabbitMqConstants.RmqPassPath);
+            string cert = File.ReadAllText(options.CertPath);
+            string key = File.ReadAllText(options.KeyPath);
+            string rmqUser = File.ReadAllText(options.UserPath);
+            string rmqPass = File.ReadAllText(options.PassPath);
 
             if (String.IsNullOrEmpty(cert))
             {

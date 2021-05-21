@@ -32,23 +32,22 @@ namespace PetMotel.Identity
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<PetMotelIdentityContext>(options =>
                 //Microsoft.EntityFrameworkCore.DBHERE
                 //options.UseSqlServer(context.Configuration.GetConnectionString("PetMotelIdentityContextConnection"))
-                options.UseInMemoryDatabase(databaseName:"PetMotelIdentity"));
+                options.UseInMemoryDatabase(databaseName: "PetMotelIdentity"));
 
             services.AddDefaultIdentity<PetMotelUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PetMotelIdentityContext>();
-            
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PetMotel.Identity", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "PetMotel.Identity", Version = "v1"});
             });
 
             services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(c=>
+            services.Configure<AuthMessageSenderOptions>(c =>
             {
                 c.SendGridKey = "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";
                 c.SendGridUser = "jamesrichardson2@gmail.com";
@@ -71,7 +70,7 @@ namespace PetMotel.Identity
 
                 // User settings.
                 options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
             });
         }
@@ -93,10 +92,7 @@ namespace PetMotel.Identity
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore;
 using PetMotel.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using PetMotel.Identity.Email;
+using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity
 {

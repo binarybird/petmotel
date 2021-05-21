@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Messaging.Exchanges.Identity;
 using MassTransit;
 using MassTransit.ConsumeConfigurators;
 using MassTransit.Definition;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common.Messaging.Exchanges.Identity;
 
 namespace PetMotel.Basket.Messaging
 {

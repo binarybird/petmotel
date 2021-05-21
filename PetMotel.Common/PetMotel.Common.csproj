@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>PetMotel.Common</AssemblyName>
+        <RootNamespace>PetMotel.Common</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="7.1.8" />
+      <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.1.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Rest" />
+    </ItemGroup>
+
+</Project>

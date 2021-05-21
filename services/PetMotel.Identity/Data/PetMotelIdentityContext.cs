@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PetMotel.Identity.Model;
+using PetMotel.Common.Rest.Model;
+using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity.Data
 {
@@ -24,6 +25,6 @@ namespace PetMotel.Identity.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<PetMotel.Identity.Model.LoginModel> LoginModel { get; set; }
+        public DbSet<LoginModel> LoginModel { get; set; }
     }
 }

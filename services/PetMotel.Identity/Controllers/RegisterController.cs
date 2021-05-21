@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common.Rest.Model;
 using PetMotel.Identity.Data;
-using PetMotel.Identity.Model;
+using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity.Controllers
 {

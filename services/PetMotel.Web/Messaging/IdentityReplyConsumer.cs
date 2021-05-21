@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.Messaging.Exchanges.Identity;
 using MassTransit;
+using PetMotel.Common.Messaging.Exchanges.Identity;
 
 namespace PetMotel.Web.Messaging
 {

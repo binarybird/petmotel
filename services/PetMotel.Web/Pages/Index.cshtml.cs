@@ -1,8 +1,8 @@
 ﻿using System;
-using Common.Messaging.Exchanges.Identity;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common.Messaging.Exchanges.Identity;
 
 namespace PetMotel.Web.Pages
 {

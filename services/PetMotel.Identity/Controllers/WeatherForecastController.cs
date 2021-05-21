@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using PetMotel.Identity.Model;
+using PetMotel.Common.Rest.Model;
 
 namespace PetMotel.Identity.Controllers
 {

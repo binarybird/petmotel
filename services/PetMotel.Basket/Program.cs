@@ -1,5 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
-using Common.Messaging;
+using PetMotel.Common.Messaging;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +25,7 @@ namespace PetMotel.Basket
         
         public static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
-            var (cert, key, rmqUser, rmqPass) = Common.RmqInitializer.Initialize();
+            var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize();
             services.AddMassTransit(x =>
             {
                 x.UsingRabbitMq((ctx, cfg) =>

@@ -3,9 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using Common;
-using Common.Messaging;
-using Common.Messaging.Exchanges.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common.Messaging;
+using PetMotel.Common.Messaging.Exchanges.Identity;
 using PetMotel.Web.Data;
 
 namespace PetMotel.Web
@@ -33,7 +32,7 @@ namespace PetMotel.Web
         {
             services.AddLogging(opt => { opt.AddConsole(c => { c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] "; }); });
 
-            var (cert, key, rmqUser, rmqPass) = Common.RmqInitializer.Initialize();
+            var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize();
 
             services.AddMassTransit(x =>
             {

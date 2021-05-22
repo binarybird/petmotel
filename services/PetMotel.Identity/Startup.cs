@@ -10,11 +10,14 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using PetMotel.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.IdentityModel.Tokens;
 using PetMotel.Identity.Email;
 using PetMotel.Identity.Entity;
 
@@ -33,15 +36,32 @@ namespace PetMotel.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PetMotelIdentityContext>(options =>
-                //Microsoft.EntityFrameworkCore.DBHERE
-                //options.UseSqlServer(context.Configuration.GetConnectionString("PetMotelIdentityContextConnection"))
                 options.UseInMemoryDatabase(databaseName: "PetMotelIdentity"));
 
             services.AddIdentity<PetMotelUser, PetMotelRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PetMotelIdentityContext>();
-            // services.AddDefaultIdentity<PetMotelUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //     .AddEntityFrameworkStores<PetMotelIdentityContext>();
-
+            
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]));
+            services.AddAuthentication(options =>  
+            {  
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;  
+            }).AddJwtBearer(config =>  
+            {  
+                config.RequireHttpsMetadata = false;  
+                config.SaveToken = true;  
+                config.TokenValidationParameters = new TokenValidationParameters()  
+                {  
+                    IssuerSigningKey = signingKey,  
+                    ValidateAudience = true,  
+                    ValidAudience = this.Configuration["Tokens:Audience"],  
+                    ValidateIssuer = true,  
+                    ValidIssuer = this.Configuration["Tokens:Issuer"],  
+                    ValidateLifetime = true,  
+                    ValidateIssuerSigningKey = true  
+                };  
+            });  
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

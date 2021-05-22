@@ -41,7 +41,7 @@ namespace PetMotel.Identity
             services.AddIdentity<PetMotelUser, PetMotelRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PetMotelIdentityContext>();
             
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]));
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:PrivateKey"]));
             services.AddAuthentication(options =>  
             {  
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  

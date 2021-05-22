@@ -1,6 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
 using PetMotel.Common.Messaging;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PetMotel.Basket.Messaging;
@@ -25,29 +26,29 @@ namespace PetMotel.Basket
         
         public static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
-            // RabbitMqOptions rmqo = new RabbitMqOptions();
-            // Configuration.GetSection(RabbitMqOptions.RabbitMq).Bind(rmqo);
-            // var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize(rmqo);
-            // services.AddMassTransit(x =>
-            // {
-            //     x.UsingRabbitMq((ctx, cfg) =>
-            //     {
-            //         cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass), h =>
-            //         {
-            //             h.UseSsl(ssl =>
-            //             {
-            //                 ssl.ServerName = "cluster.local";
-            //                 ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
-            //             });
-            //         });
-            //         
-            //         cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
-            //         {
-            //             e.Consumer<LoginConsumer>();
-            //         });
-            //     });
-            // });
-            // services.AddMassTransitHostedService();
+            RabbitMqOptions rmqo = new RabbitMqOptions();
+            configuration.GetSection(RabbitMqOptions.RabbitMq).Bind(rmqo);
+            var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize(rmqo);
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(RabbitMqConstants.GetRabbitMqUri(rmqUser, rmqPass, rmqo.Uri), h =>
+                    {
+                        h.UseSsl(ssl =>
+                        {
+                            ssl.ServerName = "cluster.local";
+                            ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
+                        });
+                    });
+                    
+                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
+                    {
+                        e.Consumer<LoginConsumer>();
+                    });
+                });
+            });
+            services.AddMassTransitHostedService();
         }
     }
 }

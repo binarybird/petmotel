@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PetMotel.Common;
 
-namespace PetMotel.Identity
+namespace PetMotel.Identity.Utilities
 {
     public static class TokenUtil
     {

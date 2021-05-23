@@ -3,22 +3,20 @@ using PetMotel.Common.Rest.Entity;
 
 namespace PetMotel.Common.Rest.Model
 {
-    public class RegisterResponseModel
+    public class RegisterResponseModel : IResponse<PetMotelUser>
     {
-        public RegisterResponseModel(PetMotelUser user, IdentityResult result, bool isLoggedIn, bool isConfirmationRequired)
-        {
-            User = user;
-            Result = result;
-            IsLoggedIn = isLoggedIn;
-            IsConfirmationRequired = isConfirmationRequired;
-        }
+        public PetMotelUser Data { get; set; }
+        
+        public bool Succeeded { get; set; }
+        
+        public string Message { get; set; }
+        
+        public string[] Errors { get; set; }
 
-        public PetMotelUser User { get; }
-        
-        public IdentityResult Result { get; }
-        
-        public bool IsLoggedIn { get; }
-        
-        public bool IsConfirmationRequired { get; }
+        public IdentityResult Result { get; set; }
+
+        public bool IsLoggedIn { get; set; }
+
+        public bool IsConfirmationRequired { get; set; }
     }
 }

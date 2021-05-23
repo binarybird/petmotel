@@ -17,6 +17,7 @@ using PetMotel.Common;
 using PetMotel.Common.Rest.Entity;
 using PetMotel.Common.Rest.Model;
 using PetMotel.Identity.Data;
+using PetMotel.Identity.Utilities;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace PetMotel.Identity.Controllers
@@ -64,29 +65,69 @@ namespace PetMotel.Identity.Controllers
                 var user = await _userManager.FindByNameAsync(petMotelLoginModel.Email);
                 if (user == null)
                 {
-                    resp = new LoginResponseModel(null, false, false, false, false, false);
+                    resp = new LoginResponseModel
+                    {
+                        Data = null,
+                        Errors = Array.Empty<string>(),
+                        Succeeded = false,
+                        IsEmailConfirmed = false,
+                        Message = "User not found",
+                        SignInResult = result
+                    };
                 }
                 else if (!user.EmailConfirmed)
                 {
                     IList<string> roles = await _userManager.GetRolesAsync(user);
                     var token = TokenUtil.GetToken(user, roles, _configuration);
-                    resp = new LoginResponseModel(token, false, false, false, false, false);
+                    resp = new LoginResponseModel
+                    {
+                        Data = token, 
+                        Errors = Array.Empty<string>(), 
+                        Succeeded = false, 
+                        IsEmailConfirmed = false,
+                        Message = "Email not confirmed", 
+                        SignInResult = result
+                    };
                 }
                 else
                 {
                     IList<string> roles = await _userManager.GetRolesAsync(user);
                     var token = TokenUtil.GetToken(user, roles, _configuration);
-                    resp = new LoginResponseModel(token, true, false, false, false, true);
+                    resp = new LoginResponseModel
+                    {
+                        Data = token, 
+                        Errors = Array.Empty<string>(), 
+                        Succeeded = true, 
+                        IsEmailConfirmed = true,
+                        Message = "", 
+                        SignInResult = result
+                    };
                 }
             }
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
-                resp = new LoginResponseModel(null, false, true, false, false, false);
+                resp = new LoginResponseModel
+                {
+                    Data = null, 
+                    Errors = Array.Empty<string>(), 
+                    Succeeded = false, 
+                    IsEmailConfirmed = false,
+                    Message = "User not found", 
+                    SignInResult = result
+                };
             }
             else
             {
-                resp = new LoginResponseModel(null, false, false, false, false, false);
+                resp = new LoginResponseModel
+                {
+                    Data = null,
+                    Errors = Array.Empty<string>(), 
+                    Succeeded = false, 
+                    IsEmailConfirmed = false,
+                    Message = "User not found", 
+                    SignInResult = result
+                };
             }
 
             return resp;

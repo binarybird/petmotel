@@ -1,44 +1,19 @@
-﻿using PetMotel.Common.Rest.Entity;
+﻿using Microsoft.AspNetCore.Identity;
+using PetMotel.Common.Rest.Entity;
 
 namespace PetMotel.Common.Rest.Model
 {
-    public class LoginResponseModel
+    public class LoginResponseModel : IResponse<string>
     {
-        public LoginResponseModel(string jwt, bool succeeded, bool isLockedOut, bool isNotAllowed, bool requiresTwoFactor, bool isEmailConfirmed)
-        {
-            JWT = jwt;
-            Succeeded = succeeded;
-            IsLockedOut = isLockedOut;
-            IsNotAllowed = isNotAllowed;
-            RequiresTwoFactor = requiresTwoFactor;
-        }
+        public SignInResult SignInResult { get; set; }
+        public string Data { get; set; }
         
-        public bool IsEmailConfirmed { get; }
+        public bool IsEmailConfirmed { get; set; }
 
-        public string JWT { get; }
+        public bool Succeeded { get; set; }
         
-        /// <summary>
-        /// Returns a flag indication whether the sign-in was successful.
-        /// </summary>
-        /// <value>True if the sign-in was successful, otherwise false.</value>
-        public bool Succeeded { get; }
-
-        /// <summary>
-        /// Returns a flag indication whether the user attempting to sign-in is locked out.
-        /// </summary>
-        /// <value>True if the user attempting to sign-in is locked out, otherwise false.</value>
-        public bool IsLockedOut { get; }
-
-        /// <summary>
-        /// Returns a flag indication whether the user attempting to sign-in is not allowed to sign-in.
-        /// </summary>
-        /// <value>True if the user attempting to sign-in is not allowed to sign-in, otherwise false.</value>
-        public bool IsNotAllowed { get; }
-
-        /// <summary>
-        /// Returns a flag indication whether the user attempting to sign-in requires two factor authentication.
-        /// </summary>
-        /// <value>True if the user attempting to sign-in requires two factor authentication, otherwise false.</value>
-        public bool RequiresTwoFactor { get; }
+        public string Message { get; set; }
+        
+        public string[] Errors { get; set; }
     }
 }

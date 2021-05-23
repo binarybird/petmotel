@@ -2,15 +2,11 @@
 
 namespace PetMotel.Common.Rest.Model
 {
-    public class AccountResponseModel
+    public class AccountResponseModel : IResponse<PetMotelUser>
     {
-        public AccountResponseModel(PetMotelUser user, bool succeeded)
-        {
-            Succeeded = succeeded;
-            User = user;
-        }
-
-        public bool Succeeded { get; }
-        public PetMotelUser User { get; }
+        public PetMotelUser Data { get; set; }
+        public bool Succeeded { get; set; }
+        public string Message { get; set; }
+        public string[] Errors { get; set; }
     }
 }

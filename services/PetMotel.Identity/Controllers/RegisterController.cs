@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
@@ -23,33 +23,53 @@ namespace PetMotel.Identity.Controllers
         private readonly UserManager<PetMotelUser> _userManager;
         private readonly ILogger<RegisterRequestModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly PetMotelIdentityContext _context;
-        private RoleManager<PetMotelRole> _roleManager;
-        
+
         public RegisterController(
-            PetMotelIdentityContext context,
             UserManager<PetMotelUser> userManager,
             SignInManager<PetMotelUser> signInManager,
             ILogger<RegisterRequestModel> logger,
-            IEmailSender emailSender,
-            RoleManager<PetMotelRole> roleManager)
+            IEmailSender emailSender)
         {
-            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _roleManager = roleManager;
+        }
+
+        [HttpGet]
+        public async Task<RegisterResponseModel> ValidateEmail([FromQuery] string token, [FromQuery] string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return new RegisterResponseModel
+                {
+                    Data = null,
+                    Errors = Array.Empty<string>(),
+                    IsConfirmationRequired = false,
+                    IsLoggedIn = false,
+                    Message = "",
+                    Result = IdentityResult.Failed(new IdentityError {Description = "Unable to validate email code"}),
+                    Succeeded = false
+                };
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            return new RegisterResponseModel
+            {
+                Data = user,
+                Errors = Array.Empty<string>(),
+                IsConfirmationRequired = false,
+                IsLoggedIn = false,
+                Message = "",
+                Result = result,
+                Succeeded = true
+            };
         }
 
         [HttpPost]
         public async Task<RegisterResponseModel> PostRegisterModel(RegisterRequestModel petMotelRegisterModel)
         {
-            var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            //TODO - clean and validate here
-
-            var user = new PetMotelUser { UserName = petMotelRegisterModel.Email, Email = petMotelRegisterModel.Email };
+            var user = new PetMotelUser {UserName = petMotelRegisterModel.Email, Email = petMotelRegisterModel.Email};
             var result = await _userManager.CreateAsync(user, petMotelRegisterModel.Password);
             if (result.Succeeded)
             {
@@ -59,32 +79,65 @@ namespace PetMotel.Identity.Controllers
                 if (!addToRoleAsync.Succeeded)
                 {
                     Task<IdentityResult> deleteAsync = _userManager.DeleteAsync(user);
-                    return new RegisterResponseModel(user, result, false, true);
+                    return new RegisterResponseModel
+                    {
+                        Data = null,
+                        Errors = Array.Empty<string>(),
+                        IsConfirmationRequired = false,
+                        IsLoggedIn = false,
+                        Message = "Unable to assign role",
+                        Result = result,
+                        Succeeded = false
+                    };
                 }
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                //TODO: fix this shit
-                string callbackUrl = $"www.petmotel.org/user/{user.Id}/register/{code}";
+                
+                string callbackUrl = $"www.petmotel.org/Register?token={code}&email={petMotelRegisterModel.Email}";
 
                 await _emailSender.SendEmailAsync(petMotelRegisterModel.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return new RegisterResponseModel(user, result, false, true);
+                    return new RegisterResponseModel
+                    {
+                        Data = user,
+                        Errors = Array.Empty<string>(),
+                        IsConfirmationRequired = true,
+                        IsLoggedIn = false,
+                        Message = "",
+                        Result = result,
+                        Succeeded = true
+                    };
                 }
                 else
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return new RegisterResponseModel(user, result, true, false);
+                    return new RegisterResponseModel
+                    {
+                        Data = user,
+                        Errors = Array.Empty<string>(),
+                        IsConfirmationRequired = false,
+                        IsLoggedIn = false,
+                        Message = "",
+                        Result = result,
+                        Succeeded = true
+                    };
                 }
             }
 
-            return new RegisterResponseModel(null, result, false, false);
+            return new RegisterResponseModel
+            {
+                Data = null,
+                Errors = Array.Empty<string>(),
+                IsConfirmationRequired = false,
+                IsLoggedIn = false,
+                Message = "",
+                Result = result,
+                Succeeded = false
+            };
         }
-
     }
 }
-

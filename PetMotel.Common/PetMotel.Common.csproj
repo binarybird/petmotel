@@ -9,11 +9,8 @@
     <ItemGroup>
       <PackageReference Include="MassTransit" Version="7.1.8" />
       <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.1.8" />
+      <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="5.0.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Rest" />
     </ItemGroup>
 
 </Project>

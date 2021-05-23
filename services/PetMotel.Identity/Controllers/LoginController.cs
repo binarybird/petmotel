@@ -13,24 +13,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using PetMotel.Common;
+using PetMotel.Common.Rest.Entity;
 using PetMotel.Common.Rest.Model;
 using PetMotel.Identity.Data;
-using PetMotel.Identity.Entity;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace PetMotel.Identity.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
         private readonly PetMotelIdentityContext _context;
         private readonly UserManager<PetMotelUser> _userManager;
         private readonly SignInManager<PetMotelUser> _signInManager;
-        private readonly ILogger<PetMotelLoginModel> _logger;
+        private readonly ILogger<LoginController> _logger;
         private readonly IConfiguration _configuration;
 
         public LoginController(SignInManager<PetMotelUser> signInManager,
-            ILogger<PetMotelLoginModel> logger,
+            RoleManager<PetMotelRole> roleManager,
+            ILogger<LoginController> logger,
             UserManager<PetMotelUser> userManager,
             PetMotelIdentityContext context,
             IConfiguration configuration)
@@ -39,74 +42,49 @@ namespace PetMotel.Identity.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _configuration = configuration;
         }
 
         // POST: api/Login
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PetMotelLoginModel>> PostLoginModel(PetMotelLoginModel petMotelLoginModel)
+        public async Task<ActionResult<LoginResponseModel>> PostLoginModel(LoginRequestModel petMotelLoginModel)
         {
-            var result = await _signInManager.PasswordSignInAsync(
+            SignInResult result = await _signInManager.PasswordSignInAsync(
                 petMotelLoginModel.Email,
                 petMotelLoginModel.Password,
                 petMotelLoginModel.RememberMe,
                 lockoutOnFailure: false);
+
+            LoginResponseModel resp;
+
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
                 var user = await _userManager.FindByNameAsync(petMotelLoginModel.Email);
-                var token = GetToken(user);
-                return CreatedAtAction("GetLoginModel", new {id = petMotelLoginModel.Id}, petMotelLoginModel);
+                if (user == null)
+                {
+                    resp = new LoginResponseModel(null, false, false, false, false);
+                }
+                else
+                {
+                    IList<string> roles = await _userManager.GetRolesAsync(user);
+                    var token = TokenUtil.GetToken(user ,roles, _configuration);
+                    resp = new LoginResponseModel(token, true, false, false, false);
+                }
+
             }
-            
-            if (result.IsLockedOut)
+            else if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
-                return CreatedAtAction("GetLoginModel", new {id = petMotelLoginModel.Id}, petMotelLoginModel);
+                resp = new LoginResponseModel(null, false, true, false, false);
             }
-            
-            return CreatedAtAction("GetLoginModel", new {id = petMotelLoginModel.Id}, petMotelLoginModel);
-        }
-        
-        // [Authorize]  
-        // [HttpPost]  
-        // // [Route("refreshtoken")]  
-        // public async Task<IActionResult> RefreshToken()  
-        // {  
-        //     var user = await _userManager.FindByNameAsync(  
-        //         User.Identity.Name ??  
-        //         User.Claims.Where(c => c.Properties.ContainsKey("unique_name")).Select(c => c.Value).FirstOrDefault()  
-        //     );  
-        //     return Ok(GetToken(user));  
-        //
-        // }  
+            else
+            {
+                resp = new LoginResponseModel(null, false, false, false, false);
+            }
 
-        //https://dejanstojanovic.net/aspnet/2018/june/token-based-authentication-in-aspnet-core-part-2/
-        private String GetToken(IdentityUser user)  
-        {  
-            var utcNow = DateTime.UtcNow;  
-  
-            var claims = new Claim[]  
-            {  
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),  
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),  
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),  
-                new Claim(JwtRegisteredClaimNames.Iat, utcNow.ToString())  
-            };  
-  
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<String>("Tokens:Key")));  
-            var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);  
-            var jwt = new JwtSecurityToken(  
-                signingCredentials: signingCredentials,  
-                claims: claims,  
-                notBefore: utcNow,  
-                expires: utcNow.AddSeconds(_configuration.GetValue<int>("Tokens:Lifetime")),  
-                audience: _configuration.GetValue<String>("Tokens:Audience"),  
-                issuer: _configuration.GetValue<String>("Tokens:Issuer")  
-            );  
-  
-            return new JwtSecurityTokenHandler().WriteToken(jwt);  
-  
-        }  
+            return resp;
+        }
     }
 }

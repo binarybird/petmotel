@@ -2,7 +2,7 @@
 
 namespace PetMotel.Common.Rest.Model
 {
-    public class PetMotelLoginModel
+    public class LoginRequestModel
     {
         public string Id { get; set; }
 

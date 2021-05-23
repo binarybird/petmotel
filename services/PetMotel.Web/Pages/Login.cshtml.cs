@@ -16,7 +16,7 @@ namespace PetMotel.Web.Pages
     public class LoginModel : PageModel
     {
         [BindProperty]
-        public PetMotelLoginModel PMLoginModel { get; set; }
+        public LoginRequestModel PMLoginModel { get; set; }
 
         private ILogger<LoginModel> _logger;
         private IBusControl _bus;

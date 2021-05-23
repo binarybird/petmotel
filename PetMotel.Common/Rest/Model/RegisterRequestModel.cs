@@ -2,7 +2,7 @@
 
 namespace PetMotel.Common.Rest.Model
 {
-    public class PetMotelRegisterModel
+    public class RegisterRequestModel
     {
         [Required]
         [EmailAddress]

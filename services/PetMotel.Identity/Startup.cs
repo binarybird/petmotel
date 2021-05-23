@@ -18,8 +18,9 @@ using PetMotel.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.IdentityModel.Tokens;
+using PetMotel.Common;
+using PetMotel.Common.Rest.Entity;
 using PetMotel.Identity.Email;
-using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity
 {
@@ -41,7 +42,8 @@ namespace PetMotel.Identity
             services.AddIdentity<PetMotelUser, PetMotelRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PetMotelIdentityContext>();
             
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:PrivateKey"]));
+            byte[] key = Convert.FromBase64String(Configuration.GetValue<String>(Constants.Config.TokenSigningKey));//Encoding.UTF8.GetBytes(Configuration[Constants.Config.TokenSigningKey])
+            var signingKey = new SymmetricSecurityKey(key);
             services.AddAuthentication(options =>  
             {  
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  
@@ -54,9 +56,9 @@ namespace PetMotel.Identity
                 {  
                     IssuerSigningKey = signingKey,  
                     ValidateAudience = true,  
-                    ValidAudience = this.Configuration["Tokens:Audience"],  
+                    ValidAudience = this.Configuration[Constants.Config.TokenAudience],  
                     ValidateIssuer = true,  
-                    ValidIssuer = this.Configuration["Tokens:Issuer"],  
+                    ValidIssuer = this.Configuration[Constants.Config.TokenIssuer],  
                     ValidateLifetime = true,  
                     ValidateIssuerSigningKey = true  
                 };  
@@ -108,6 +110,7 @@ namespace PetMotel.Identity
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetMotel.Identity v1"));
+                DataGenerator.SeedData(userManager, roleManager);
             }
 
             app.UseHttpsRedirection();
@@ -119,7 +122,7 @@ namespace PetMotel.Identity
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             
-            DataGenerator.SeedData(userManager, roleManager);
+            
         }
     }
 }

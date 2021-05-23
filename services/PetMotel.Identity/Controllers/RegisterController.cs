@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common.Rest.Entity;
 using PetMotel.Common.Rest.Model;
 using PetMotel.Identity.Data;
-using PetMotel.Identity.Entity;
 
 namespace PetMotel.Identity.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class RegisterController : ControllerBase
     {
         private readonly SignInManager<PetMotelUser> _signInManager;
         private readonly UserManager<PetMotelUser> _userManager;
-        private readonly ILogger<PetMotelRegisterModel> _logger;
+        private readonly ILogger<RegisterRequestModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly PetMotelIdentityContext _context;
         private RoleManager<PetMotelRole> _roleManager;
@@ -29,7 +29,7 @@ namespace PetMotel.Identity.Controllers
             PetMotelIdentityContext context,
             UserManager<PetMotelUser> userManager,
             SignInManager<PetMotelUser> signInManager,
-            ILogger<PetMotelRegisterModel> logger,
+            ILogger<RegisterRequestModel> logger,
             IEmailSender emailSender,
             RoleManager<PetMotelRole> roleManager)
         {
@@ -42,7 +42,7 @@ namespace PetMotel.Identity.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PetMotelLoginModel>> PostRegisterModel(PetMotelRegisterModel petMotelRegisterModel)
+        public async Task<ActionResult<RegisterRequestModel>> PostRegisterModel(RegisterRequestModel petMotelRegisterModel)
         {
             var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -58,6 +58,7 @@ namespace PetMotel.Identity.Controllers
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
+                //TODO: fix this shit
                 string callbackUrl = $"www.petmotel.org/user/{user.Id}/register/{code}";
 
                 await _emailSender.SendEmailAsync(petMotelRegisterModel.Email, "Confirm your email",

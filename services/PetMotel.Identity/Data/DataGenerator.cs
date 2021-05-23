@@ -6,7 +6,8 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using PetMotel.Identity.Entity;
+using PetMotel.Common;
+using PetMotel.Common.Rest.Entity;
 
 namespace PetMotel.Identity.Data
 {
@@ -30,7 +31,7 @@ namespace PetMotel.Identity.Data
             IdentityResult result = userManager.CreateAsync(root, "Passw0rd!").Result;
             if (result.Succeeded)
             {
-                userManager.AddToRoleAsync(root, Roles.Root).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.Root).Wait();
             }
             else
             {
@@ -49,7 +50,7 @@ namespace PetMotel.Identity.Data
             result = userManager.CreateAsync(user, "Passw0rd!").Result;
             if (result.Succeeded)
             {
-                userManager.AddToRoleAsync(user, Roles.User).Wait();
+                userManager.AddToRoleAsync(user, Constants.Roles.User).Wait();
             }
             else
             {
@@ -64,8 +65,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.Root,
-                NormalizedName = Roles.Root,
+                Name = Constants.Roles.Root,
+                NormalizedName = Constants.Roles.Root,
                 Description = "Access to root functions"
             };
             IdentityResult roleResult = roleManager.CreateAsync(root).Result;
@@ -79,8 +80,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.Admin,
-                NormalizedName = Roles.Admin,
+                Name = Constants.Roles.Admin,
+                NormalizedName = Constants.Roles.Admin,
                 Description = "Access to admin functions"
             };
             roleResult = roleManager.CreateAsync(admin).Result;
@@ -94,8 +95,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.Manager,
-                NormalizedName = Roles.Manager,
+                Name = Constants.Roles.Manager,
+                NormalizedName = Constants.Roles.Manager,
                 Description = "Access to Manager functions"
             };
             roleResult = roleManager.CreateAsync(manager).Result;
@@ -109,8 +110,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.Employee,
-                NormalizedName = Roles.Employee,
+                Name = Constants.Roles.Employee,
+                NormalizedName = Constants.Roles.Employee,
                 Description = "Access to Employee functions"
             };
             roleResult = roleManager.CreateAsync(employee).Result;
@@ -124,8 +125,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.Contributor,
-                NormalizedName = Roles.Contributor,
+                Name = Constants.Roles.Contributor,
+                NormalizedName = Constants.Roles.Contributor,
                 Description = "Access to ReadOnly Employee functions"
             };
             roleResult = roleManager.CreateAsync(contributor).Result;
@@ -139,8 +140,8 @@ namespace PetMotel.Identity.Data
             {
                 ConcurrencyStamp = null,
                 Id = Guid.NewGuid().ToString(),
-                Name = Roles.User,
-                NormalizedName = Roles.User,
+                Name = Constants.Roles.User,
+                NormalizedName = Constants.Roles.User,
                 Description = "Access to Manager functions"
             };
             roleResult = roleManager.CreateAsync(user).Result;

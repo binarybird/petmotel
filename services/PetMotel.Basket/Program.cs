@@ -11,23 +11,33 @@ namespace PetMotel.Basket
 {
     public class Program
     {
+        private static IConfigurationRoot _configuration;
+
         public static void Main(string[] args)
         {
             IHost build = CreateHostBuilder(args).Build();
-            
+
             ServiceActivator.Configure(build.Services);
-            
+
             build.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices(ConfigureServices);
-        
+                .ConfigureAppConfiguration(conf =>
+                {
+                    _configuration = conf
+                        .AddJsonFile("appsettings.Developement.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables()
+                        .AddCommandLine(args)
+                        .Build();
+                }).ConfigureServices(ConfigureServices);
+
+
         public static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services)
         {
             RabbitMqOptions rmqo = new RabbitMqOptions();
-            configuration.GetSection(RabbitMqOptions.RabbitMq).Bind(rmqo);
+            _configuration.GetSection(RabbitMqOptions.RabbitMq).Bind(rmqo);
             var (cert, key, rmqUser, rmqPass) = RmqInitializer.Initialize(rmqo);
             services.AddMassTransit(x =>
             {
@@ -41,11 +51,8 @@ namespace PetMotel.Basket
                             ssl.Certificate = X509Certificate2.CreateFromPem(cert, key);
                         });
                     });
-                    
-                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e =>
-                    {
-                        e.Consumer<LoginConsumer>();
-                    });
+
+                    cfg.ReceiveEndpoint(RabbitMqConstants.IdentityService, e => { e.Consumer<LoginConsumer>(); });
                 });
             });
             services.AddMassTransitHostedService();

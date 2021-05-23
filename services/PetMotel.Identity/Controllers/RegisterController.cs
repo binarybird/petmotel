@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using PetMotel.Common;
 using PetMotel.Common.Rest.Entity;
 using PetMotel.Common.Rest.Model;
 using PetMotel.Identity.Data;
@@ -42,7 +43,7 @@ namespace PetMotel.Identity.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RegisterRequestModel>> PostRegisterModel(RegisterRequestModel petMotelRegisterModel)
+        public async Task<RegisterResponseModel> PostRegisterModel(RegisterRequestModel petMotelRegisterModel)
         {
             var ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -50,10 +51,16 @@ namespace PetMotel.Identity.Controllers
 
             var user = new PetMotelUser { UserName = petMotelRegisterModel.Email, Email = petMotelRegisterModel.Email };
             var result = await _userManager.CreateAsync(user, petMotelRegisterModel.Password);
-            
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                IdentityResult addToRoleAsync = await _userManager.AddToRoleAsync(user, Constants.Roles.User);
+                if (!addToRoleAsync.Succeeded)
+                {
+                    Task<IdentityResult> deleteAsync = _userManager.DeleteAsync(user);
+                    return new RegisterResponseModel(user, result, false, true);
+                }
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -66,24 +73,18 @@ namespace PetMotel.Identity.Controllers
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {
-                    return RedirectToPage("RegisterConfirmation", new { email = petMotelRegisterModel.Email, returnUrl = "returnUrl" });
+                    return new RegisterResponseModel(user, result, false, true);
                 }
                 else
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect("returnUrl");
+                    return new RegisterResponseModel(user, result, true, false);
                 }
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-
-            // If we got this far, something failed, redisplay form
-            return null;
+            return new RegisterResponseModel(null, result, false, false);
         }
+
     }
 }
 

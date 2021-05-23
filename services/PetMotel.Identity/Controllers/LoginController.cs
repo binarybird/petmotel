@@ -64,24 +64,29 @@ namespace PetMotel.Identity.Controllers
                 var user = await _userManager.FindByNameAsync(petMotelLoginModel.Email);
                 if (user == null)
                 {
-                    resp = new LoginResponseModel(null, false, false, false, false);
+                    resp = new LoginResponseModel(null, false, false, false, false, false);
+                }
+                else if (!user.EmailConfirmed)
+                {
+                    IList<string> roles = await _userManager.GetRolesAsync(user);
+                    var token = TokenUtil.GetToken(user, roles, _configuration);
+                    resp = new LoginResponseModel(token, false, false, false, false, false);
                 }
                 else
                 {
                     IList<string> roles = await _userManager.GetRolesAsync(user);
-                    var token = TokenUtil.GetToken(user ,roles, _configuration);
-                    resp = new LoginResponseModel(token, true, false, false, false);
+                    var token = TokenUtil.GetToken(user, roles, _configuration);
+                    resp = new LoginResponseModel(token, true, false, false, false, true);
                 }
-
             }
             else if (result.IsLockedOut)
             {
                 _logger.LogWarning("User account locked out.");
-                resp = new LoginResponseModel(null, false, true, false, false);
+                resp = new LoginResponseModel(null, false, true, false, false, false);
             }
             else
             {
-                resp = new LoginResponseModel(null, false, false, false, false);
+                resp = new LoginResponseModel(null, false, false, false, false, false);
             }
 
             return resp;

@@ -14,22 +14,22 @@ namespace PetMotel.Common.Messaging
 
             if (String.IsNullOrEmpty(cert))
             {
-                throw new Exception("Unable to read certificate");
+                throw new System.Exception("Unable to read certificate");
             }
 
             if (String.IsNullOrEmpty(key))
             {
-                throw new Exception("Unable to read certificate key");
+                throw new System.Exception("Unable to read certificate key");
             }
 
             if (String.IsNullOrEmpty(rmqUser))
             {
-                throw new Exception("Unable to read rmq user");
+                throw new System.Exception("Unable to read rmq user");
             }
 
             if (String.IsNullOrEmpty(rmqPass))
             {
-                throw new Exception("Unable to read rmq password");
+                throw new System.Exception("Unable to read rmq password");
             }
 
             return (cert, key, rmqUser, rmqPass);

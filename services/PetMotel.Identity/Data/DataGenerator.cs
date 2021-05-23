@@ -32,6 +32,11 @@ namespace PetMotel.Identity.Data
             if (result.Succeeded)
             {
                 userManager.AddToRoleAsync(root, Constants.Roles.Root).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.Admin).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.Manager).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.Employee).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.Contributor).Wait();
+                userManager.AddToRoleAsync(root, Constants.Roles.User).Wait();
             }
             else
             {

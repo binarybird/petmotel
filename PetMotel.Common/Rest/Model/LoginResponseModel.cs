@@ -4,7 +4,7 @@ namespace PetMotel.Common.Rest.Model
 {
     public class LoginResponseModel
     {
-        public LoginResponseModel(string jwt, bool succeeded, bool isLockedOut, bool isNotAllowed, bool requiresTwoFactor)
+        public LoginResponseModel(string jwt, bool succeeded, bool isLockedOut, bool isNotAllowed, bool requiresTwoFactor, bool isEmailConfirmed)
         {
             JWT = jwt;
             Succeeded = succeeded;
@@ -12,6 +12,8 @@ namespace PetMotel.Common.Rest.Model
             IsNotAllowed = isNotAllowed;
             RequiresTwoFactor = requiresTwoFactor;
         }
+        
+        public bool IsEmailConfirmed { get; }
 
         public string JWT { get; }
         

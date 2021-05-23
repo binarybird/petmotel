@@ -14,16 +14,16 @@ using PetMotel.Common.Rest.Model;
 namespace PetMotel.Identity.Controllers
 {
     
-    [Authorize]
+    [Authorize(Roles = Constants.Roles.User)]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {
         private readonly UserManager<PetMotelUser> _userManager;
-        private readonly ILogger<LoginController> _logger;
+        private readonly ILogger<TokenController> _logger;
         private readonly IConfiguration _configuration;
         
-        public TokenController(ILogger<LoginController> logger,
+        public TokenController(ILogger<TokenController> logger,
             UserManager<PetMotelUser> userManager,
             IConfiguration configuration)
         {

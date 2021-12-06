@@ -75,7 +75,7 @@ namespace PetMotel.Identity
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(c =>
             {
-                c.SendGridKey = "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";
+                c.SendGridKey = "somekey";
                 c.SendGridUser = "jamesrichardson2@gmail.com";
             });
 

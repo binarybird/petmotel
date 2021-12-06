@@ -1,0 +1,13 @@
+@page
+@model PetMotel.Web.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+<form method="post">
+    <div>Username:</div><input asp-for="PMLoginModel.Email"><br/>
+    <div>Password:</div><input asp-for="PMLoginModel.Password"><br/>
+    <div>Remember Me:</div><input asp-for="PMLoginModel.RememberMe"><br/>
+    <input type="submit" name="Submit">
+</form>
